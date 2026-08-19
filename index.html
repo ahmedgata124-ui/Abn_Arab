@@ -3,344 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ابن العرب AI - التوليد السريع</title>
+    <title>ابن العرب AI | منصة الذكاء الاصطناعي الشاملة</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 
-    <!-- Firebase SDKs (Compat Version) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
-
-    <style>
-        :root {
-            --bg-main: #060913;
-            --card-bg: rgba(18, 24, 38, 0.7);
-            --primary-glow: #38bdf8;
-            --secondary-glow: #818cf8;
-            --accent-pink: #f43f5e;
-            --text-white: #f8fafc;
-            --text-dim: #94a3b8;
-            --border-glow: rgba(56, 189, 248, 0.2);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-white);
-            min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
-            direction: rtl;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 8%;
-            background: rgba(6, 9, 19, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-glow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .credits-pill {
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid var(--primary-glow);
-            color: var(--primary-glow);
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .btn-google {
-            background: #ffffff;
-            color: #0f172a;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        .btn-google:hover { transform: translateY(-2px); }
-
-        .user-profile {
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-profile img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--primary-glow);
-        }
-
-        .hero {
-            text-align: center;
-            padding: 50px 20px 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-        }
-
-        .hero h1 span {
-            background: linear-gradient(90deg, var(--primary-glow), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto 60px;
-            padding: 0 20px;
-        }
-
-        .workspace {
-            background: var(--card-bg);
-            border: 1px solid var(--border-glow);
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: blur(16px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
-        textarea {
-            width: 100%;
-            height: 110px;
-            background: rgba(6, 9, 19, 0.7);
-            border: 1px solid var(--border-glow);
-            color: var(--text-white);
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 1rem;
-            resize: none;
-            outline: none;
-            margin-bottom: 20px;
-        }
-
-        textarea:focus { border-color: var(--primary-glow); }
-
-        .btn-generate {
-            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
-            color: #000;
-            border: none;
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 900;
-            font-size: 1.1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: opacity 0.3s;
-        }
-
-        .result-box {
-            margin-top: 25px;
-            text-align: center;
-            display: none;
-        }
-
-        .result-box img {
-            max-width: 100%;
-            border-radius: 16px;
-            border: 1px solid var(--border-glow);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .loader {
-            display: none;
-            color: var(--primary-glow);
-            margin: 20px 0;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
 
     <nav>
         <div class="logo">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> ابن العرب AI
+            <i class="fa-solid fa-brain"></i> <span>ابن العرب AI</span>
         </div>
-        <div class="nav-actions">
-            <div class="credits-pill">⚡ النقاط: <span id="user-credits">5</span></div>
-            <button class="btn-google" id="login-btn" onclick="loginGoogle()">
-                <i class="fa-brands fa-google" style="color:#ea4335;"></i> دخول بـ Google
-            </button>
-            <div class="user-profile" id="user-profile">
-                <img id="user-img" src="" alt="User">
-                <button onclick="logout()" style="background:#ef4444; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold;">خروج</button>
-            </div>
-        </div>
+        <ul class="nav-links">
+            <li><a href="#features">الأدوات</a></li>
+            <li><a href="#demo">التجربة المجانية</a></li>
+            <li><a href="#pricing">الباقات</a></li>
+            <li><a href="#support">التواصل والدعم</a></li>
+        </ul>
+        <button class="btn-auth" id="login-btn" onclick="loginGoogle()">
+            <i class="fa-brands fa-google"></i> تسجيل الدخول
+        </button>
     </nav>
 
-    <div class="hero">
-        <h1>توليد صور الذكاء الاصطناعي <span>الفائق ⚡</span></h1>
-        <p style="color:var(--text-dim);">اكتب الوصف بالعربي وسيتم إنشاء الصورة خلال ثوانٍ:</p>
+    <section class="hero">
+        <h1>منصة <span>ابن العرب AI</span> لأدوات الذكاء الاصطناعي</h1>
+        <p>قم بإنشاء التصاميم، الصور، تعديل الصور، ومعالجة الوسائط بأعلى جودة وبسرعة فائقة.</p>
+        <div class="hero-btns">
+            <a href="https://wa.me/201213023568" target="_blank" class="btn-whatsapp">
+                <i class="fa-brands fa-whatsapp"></i> تواصل عبر واتساب
+            </a>
+            <a href="#pricing" class="btn-discover">اكتشف الباقات</a>
+        </div>
+    </section>
+
+    <h2 class="section-title" id="features">ماذا تقدم منصة ابن العرب AI؟</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <i class="fa-solid fa-image"></i>
+            <h3>تصميم الصور</h3>
+            <p>إنشاء تصاميم وصور فائقة الدقة والواقعية عبر أوامر نصية بسيطة.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <h3>تعديل الصور الذكي</h3>
+            <p>رفع صورك والتعديل عليها واستخدام تأثيرات الذكاء الاصطناعي المتقدمة.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa-solid fa-video"></i>
+            <h3>توليد الفيديوهات</h3>
+            <p>صناعة فيديوهات احترافية باستخدام أحدث نماذج توليد الفيديو.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa-solid fa-user-astronaut"></i>
+            <h3>صناعة الأفاتار</h3>
+            <p>تحويل الملامح والصور الشخصية إلى أفاتار رقمي متكلم وأنيق.</p>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="workspace">
-            <textarea id="user-prompt" placeholder="اكتب وصف الصورة هنا... (مثال: محارب عربي بأسلوب سينمائي حديث)"></textarea>
-
-            <button class="btn-generate" id="gen-btn" onclick="runFastGenerator()">
-                <i class="fa-solid fa-bolt"></i> توليد الصورة فوراً
-            </button>
-
-            <div class="loader" id="loader">
-                <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
-                <p style="margin-top:10px;" id="status-text">جاري معالجة الصورة...</p>
+    <h2 class="section-title" id="demo">التجربة المجانية (5 محاولات)</h2>
+    <div class="studio-container">
+        <div class="studio-box">
+            <div class="studio-header">
+                <span class="credits-badge">النقاط المتبقية: <span id="credits-count">5</span>/5</span>
             </div>
 
-            <div class="result-box" id="result-box">
-                <img id="out-img" src="" alt="النتيجة">
+            <div class="studio-tabs">
+                <button class="tab-btn active" onclick="switchTab('generate')">توليد صورة جديدة</button>
+                <button class="tab-btn" onclick="switchTab('edit')">رفع وتعديل صورة</button>
+            </div>
+
+            <div id="panel-generate" class="studio-panel active">
+                <textarea id="gen-prompt" placeholder="اكتب وصف الصورة بالتفصيل (مثال: محارب عربي برداء فخم في مدينة مستقبلية)..."></textarea>
+                <button class="btn-action" onclick="generateImage()">توليد الصورة الآن</button>
+            </div>
+
+            <div id="panel-edit" class="studio-panel">
+                <input type="file" id="image-upload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                <button class="btn-action btn-upload" onclick="document.getElementById('image-upload').click()">
+                    <i class="fa-solid fa-upload"></i> اختر صورة من جهازك
+                </button>
+                <input type="text" id="edit-prompt" placeholder="ما التعديل المطلوب على الصورة؟ (مثال: اضف إضاءة نيون خلفية)">
+                <button class="btn-action" onclick="editUploadedImage()">تطبيق التعديل بالذكاء الاصطناعي</button>
+            </div>
+
+            <div class="preview-area" id="preview-area">
+                <span id="preview-placeholder">ستظهر النتيجة هنا</span>
             </div>
         </div>
     </div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyC2Dbppgjk09edIskPX5OM-ujoqKXLJRDA",
-            authDomain: "abn-arab-ai.firebaseapp.com",
-            projectId: "abn-arab-ai",
-            storageBucket: "abn-arab-ai.firebasestorage.app",
-            messagingSenderId: "863813080286",
-            appId: "1:863813080286:web:5fd4e1d46380992fdede4f",
-            measurementId: "G-XYNDV35VB2"
-        };
+    <h2 class="section-title" id="pricing">خطط الاشتراك</h2>
+    <div class="pricing-grid">
+        <div class="price-card">
+            <h3>الباقة التجريبية</h3>
+            <div class="price">مجاناً</div>
+            <ul>
+                <li><i class="fa-solid fa-check"></i> 5 صور مجانية للتجربة</li>
+                <li><i class="fa-solid fa-check"></i> أدوات التوليد الأساسية</li>
+                <li><i class="fa-solid fa-check"></i> جودة متوسطة</li>
+            </ul>
+            <a href="#demo" class="btn-auth btn-block">جرب الآن</a>
+        </div>
+        <div class="price-card popular">
+            <h3>الباقة الاحترافية</h3>
+            <div class="price">$15 <span>/شهرياً</span></div>
+            <ul>
+                <li><i class="fa-solid fa-check"></i> توليد صور غير محدود</li>
+                <li><i class="fa-solid fa-check"></i> أدوات تعديل الصور المتقدمة</li>
+                <li><i class="fa-solid fa-check"></i> أسرع محرك توليد (FLUX Schnell)</li>
+                <li><i class="fa-solid fa-check"></i> دعم فني مباشر عبر واتساب</li>
+            </ul>
+            <a href="https://wa.me/201213023568?text=اريد%20الاشتراك%20في%20الباقة%20الاحترافية" target="_blank" class="btn-auth btn-block">اشترك الآن</a>
+        </div>
+    </div>
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-            firebase.analytics();
-        }
+    <footer id="support">
+        <div class="support-info">
+            <a href="https://wa.me/201213023568" target="_blank">
+                <i class="fa-brands fa-whatsapp green-icon"></i> واتساب: 01213023568
+            </a>
+            <a href="mailto:abn.arab.ai.support@gmail.com">
+                <i class="fa-solid fa-envelope blue-icon"></i> abn.arab.ai.support@gmail.com
+            </a>
+        </div>
+        <p>جميع الحقوق محفوظة © 2026 - منصة ابن العرب AI</p>
+    </footer>
 
-        const auth = firebase.auth();
-        const provider = new firebase.auth.GoogleAuthProvider();
-
-        let credits = localStorage.getItem('abn_credits') ? parseInt(localStorage.getItem('abn_credits')) : 5;
-        document.getElementById('user-credits').innerText = credits;
-
-        function loginGoogle() {
-            auth.signInWithPopup(provider).catch(e => alert(e.message));
-        }
-
-        function logout() {
-            auth.signOut().then(() => {
-                document.getElementById('login-btn').style.display = 'flex';
-                document.getElementById('user-profile').style.display = 'none';
-            });
-        }
-
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                document.getElementById('login-btn').style.display = 'none';
-                document.getElementById('user-profile').style.display = 'flex';
-                document.getElementById('user-img').src = user.photoURL;
-            }
-        });
-
-        async function runFastGenerator() {
-            if (credits <= 0) return alert("نفذت نقاطك المجانية الـ 5!");
-
-            const prompt = document.getElementById('user-prompt').value.trim();
-            if (!prompt) return alert("اكتب الوصف أولاً!");
-
-            const loader = document.getElementById('loader');
-            const resBox = document.getElementById('result-box');
-            const imgOut = document.getElementById('out-img');
-            const genBtn = document.getElementById('gen-btn');
-            const statusText = document.getElementById('status-text');
-
-            loader.style.display = 'block';
-            resBox.style.display = 'none';
-            genBtn.disabled = true;
-            genBtn.style.opacity = '0.5';
-
-            try {
-                // 1. ترجمة سريعة للوصف
-                statusText.innerText = "جاري ترجمة الوصف...";
-                const trans = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=en&dt=t&q=${encodeURIComponent(prompt)}`);
-                const transData = await trans.json();
-                const enPrompt = transData[0][0][0];
-
-                // 2. إعداد رابط التوليد السريع
-                statusText.innerText = "جاري رسم الصورة...";
-                const seed = Math.floor(Math.random() * 1000000);
-                const generatedUrl = `https://pollinations.ai/p/${encodeURIComponent(enPrompt)}?width=512&height=512&seed=${seed}&model=flux-schnell&nologo=true`;
-
-                // 3. التحميل المباشر الآمن لمنع خطأ Failed to fetch
-                const tempImg = new Image();
-                tempImg.src = generatedUrl;
-
-                tempImg.onload = () => {
-                    imgOut.src = generatedUrl;
-                    loader.style.display = 'none';
-                    resBox.style.display = 'block';
-                    genBtn.disabled = false;
-                    genBtn.style.opacity = '1';
-                    useCredit();
-                };
-
-                tempImg.onerror = () => {
-                    throw new Error("عذراً، تعذر إنشاء الصورة حالياً.");
-                };
-
-            } catch (err) {
-                loader.style.display = 'none';
-                genBtn.disabled = false;
-                genBtn.style.opacity = '1';
-                alert(err.message || "حدث خطأ غير متوقع، حاول مرة أخرى.");
-            }
-        }
-
-        function useCredit() {
-            credits--;
-            localStorage.setItem('abn_credits', credits);
-            document.getElementById('user-credits').innerText = credits;
-        }
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
