@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ابن العرب AI - المنصة الشاملة</title>
+    <title>ابن العرب AI - التوليد السريع</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (Compat version for browser) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
 
     <style>
         :root {
@@ -39,10 +40,8 @@
                 radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
                 radial-gradient(circle at 90% 90%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
             direction: rtl;
-            overflow-x: hidden;
         }
 
-        /* Navbar */
         nav {
             display: flex;
             justify-content: space-between;
@@ -95,7 +94,6 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(255,255,255,0.1);
         }
 
         .btn-google:hover { transform: translateY(-2px); }
@@ -113,19 +111,17 @@
             border: 2px solid var(--primary-glow);
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
-            padding: 60px 20px 40px;
+            padding: 50px 20px 30px;
             max-width: 900px;
             margin: 0 auto;
         }
 
         .hero h1 {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .hero h1 span {
@@ -134,49 +130,12 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .hero p {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-        }
-
-        /* Tools Tabs Grid */
         .container {
-            max-width: 1100px;
+            max-width: 900px;
             margin: 0 auto 60px;
             padding: 0 20px;
         }
 
-        .tools-nav {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-glow);
-            color: var(--text-dim);
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tab-btn:hover, .tab-btn.active {
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2));
-            color: var(--text-white);
-            border-color: var(--primary-glow);
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
-        }
-
-        /* Active Tool Workspace */
         .workspace {
             background: var(--card-bg);
             border: 1px solid var(--border-glow);
@@ -188,7 +147,7 @@
 
         textarea {
             width: 100%;
-            height: 120px;
+            height: 110px;
             background: rgba(6, 9, 19, 0.7);
             border: 1px solid var(--border-glow);
             color: var(--text-white);
@@ -198,7 +157,6 @@
             resize: none;
             outline: none;
             margin-bottom: 20px;
-            transition: border 0.3s;
         }
 
         textarea:focus { border-color: var(--primary-glow); }
@@ -217,38 +175,24 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: all 0.3s;
         }
 
-        .btn-generate:hover {
-            transform: scale(1.01);
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
-        }
-
-        /* Result Area */
         .result-box {
-            margin-top: 30px;
+            margin-top: 25px;
             text-align: center;
             display: none;
         }
 
         .result-box img {
             max-width: 100%;
-            max-height: 500px;
             border-radius: 16px;
             border: 1px solid var(--border-glow);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-
-        .audio-player {
-            width: 100%;
-            margin-top: 15px;
         }
 
         .loader {
             display: none;
             color: var(--primary-glow);
-            margin: 25px 0;
+            margin: 20px 0;
             text-align: center;
         }
     </style>
@@ -262,7 +206,7 @@
         <div class="nav-actions">
             <div class="credits-pill">⚡ النقاط: <span id="user-credits">5</span></div>
             <button class="btn-google" id="login-btn" onclick="loginGoogle()">
-                <i class="fa-brands fa-google" style="color:#ea4335;"></i> تسجيل بـ Google
+                <i class="fa-brands fa-google" style="color:#ea4335;"></i> دخول بـ Google
             </button>
             <div class="user-profile" id="user-profile">
                 <img id="user-img" src="" alt="User">
@@ -272,43 +216,31 @@
     </nav>
 
     <div class="hero">
-        <h1>إمكانيات الذكاء الاصطناعي بين <span>يديك الآن</span></h1>
-        <p>ولد صوراً واقعية، حوّل النصوص إلى صوت ناطق، واكتب المحتوى بضغطة زر.</p>
+        <h1>توليد صور الذكاء الاصطناعي <span>الفائق ⚡</span></h1>
+        <p style="color:var(--text-dim);">اكتب الوصف بالعربي للحصول على صورة عالية الجودة بسرعة:</p>
     </div>
 
     <div class="container">
-        <!-- أزرار التبديل بين الأدوات -->
-        <div class="tools-nav">
-            <button class="tab-btn active" onclick="switchTool('image', this)"><i class="fa-solid fa-image"></i> توليد الصور (FLUX)</button>
-            <button class="tab-btn" onclick="switchTool('audio', this)"><i class="fa-solid fa-volume-high"></i> توليد الصوت الذكي</button>
-            <button class="tab-btn" onclick="switchTool('writer', this)"><i class="fa-solid fa-pen-nib"></i> كتابة المحتوى</button>
-        </div>
-
-        <!-- منطقة العمل -->
         <div class="workspace">
-            <h3 id="tool-title" style="margin-bottom: 10px;"><i class="fa-solid fa-image"></i> توليد صور فائقة الجودة</h3>
-            <p id="tool-desc" style="color:var(--text-dim); font-size:0.9rem; margin-bottom:15px;">اكتب وصفك بالعربي وسيتم إنشاء صورة عالية الدقة فوراً:</p>
+            <textarea id="user-prompt" placeholder="اكتب وصف الصورة هنا... (مثال: محارب عربي يرتدي درعاً ذهبياً في المستقبلي)"></textarea>
 
-            <textarea id="user-prompt" placeholder="اكتب وصفك هنا... (مثال: أسد ملكي يرتدي درعاً ذهبياً فوق قمة جبل)"></textarea>
-
-            <button class="btn-generate" id="action-btn" onclick="runTool()">
-                <i class="fa-solid fa-bolt"></i> بدء التوليد الآن
+            <button class="btn-generate" onclick="runFastGenerator()">
+                <i class="fa-solid fa-bolt"></i> توليد الصورة الآن
             </button>
 
             <div class="loader" id="loader">
-                <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
-                <p style="margin-top:10px;" id="loader-text">جاري المعالجة والتوليد السريع...</p>
+                <i class="fa-solid fa-bolt-lightning fa-spin fa-2x"></i>
+                <p style="margin-top:10px;">جاري التوليد السريع...</p>
             </div>
 
             <div class="result-box" id="result-box">
-                <img id="out-img" src="" alt="النتيجة" style="display:none;">
-                <div id="out-text" style="display:none; text-align:right; background:rgba(6,9,19,0.8); padding:20px; border-radius:12px; line-height:1.8;"></div>
+                <img id="out-img" src="" alt="النتيجة">
             </div>
         </div>
     </div>
 
     <script>
-        // بيانات Firebase الخاصة بك
+        // إعدادات Firebase الخاصة بك
         const firebaseConfig = {
             apiKey: "AIzaSyC2Dbppgjk09edIskPX5OM-ujoqKXLJRDA",
             authDomain: "abn-arab-ai.firebaseapp.com",
@@ -319,14 +251,17 @@
             measurementId: "G-XYNDV35VB2"
         };
 
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+        }
+
         const auth = firebase.auth();
         const provider = new firebase.auth.GoogleAuthProvider();
 
         let credits = localStorage.getItem('abn_credits') ? parseInt(localStorage.getItem('abn_credits')) : 5;
         document.getElementById('user-credits').innerText = credits;
 
-        // Firebase Auth
         function loginGoogle() {
             auth.signInWithPopup(provider).catch(e => alert(e.message));
         }
@@ -346,87 +281,37 @@
             }
         });
 
-        // Tab Switching
-        let currentMode = 'image';
-        function switchTool(mode, btn) {
-            currentMode = mode;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            document.getElementById('result-box').style.display = 'none';
-
-            if(mode === 'image') {
-                document.getElementById('tool-title').innerHTML = '<i class="fa-solid fa-image"></i> توليد صور فائقة الجودة';
-                document.getElementById('user-prompt').placeholder = 'اكتب وصف الصورة بالعربي...';
-            } else if(mode === 'audio') {
-                document.getElementById('tool-title').innerHTML = '<i class="fa-solid fa-volume-high"></i> تحويل النص إلى صوت ذكي';
-                document.getElementById('user-prompt').placeholder = 'اكتب النص الذي تريد تحويله لمقطع صوتي ناطق...';
-            } else {
-                document.getElementById('tool-title').innerHTML = '<i class="fa-solid fa-pen-nib"></i> كتابة المحتوى والبوستات';
-                document.getElementById('user-prompt').placeholder = 'اكتب عنوان المقال أو موضوع البوست المطلوب...';
-            }
-        }
-
-        // Action Executions
-        async function runTool() {
-            if (credits <= 0) {
-                alert("نفذت نقاطك المجانية الـ 5!");
-                return;
-            }
+        async function runFastGenerator() {
+            if (credits <= 0) return alert("نفذت نقاطك المجانية الـ 5!");
 
             const prompt = document.getElementById('user-prompt').value.trim();
-            if(!prompt) return alert("اكتب النص أولاً!");
+            if (!prompt) return alert("اكتب الوصف أولاً!");
 
             const loader = document.getElementById('loader');
             const resBox = document.getElementById('result-box');
             const imgOut = document.getElementById('out-img');
-            const textOut = document.getElementById('out-text');
 
             loader.style.display = 'block';
             resBox.style.display = 'none';
 
-            if (currentMode === 'image') {
-                // توليد الصور
+            try {
+                // ترجمة سريعة للوصف
                 const trans = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=en&dt=t&q=${encodeURIComponent(prompt)}`);
                 const transData = await trans.json();
                 const enPrompt = transData[0][0][0];
 
-                const imgUrl = `https://pollinations.ai/p/${encodeURIComponent(enPrompt)}?width=1024&height=1024&seed=${Math.floor(Math.random()*1000000)}&model=flux`;
+                // التوليد عبر محرك flux-schnell السريع
+                const imgUrl = `https://pollinations.ai/p/${encodeURIComponent(enPrompt)}?width=512&height=512&seed=${Math.floor(Math.random()*1000000)}&model=flux-schnell&nologo=true`;
                 
                 imgOut.src = imgUrl;
                 imgOut.onload = () => {
                     loader.style.display = 'none';
                     resBox.style.display = 'block';
-                    imgOut.style.display = 'block';
-                    textOut.style.display = 'none';
                     useCredit();
                 };
-            } else if (currentMode === 'audio') {
-                // توليد الصوت الناطق مباشرة
+            } catch (err) {
                 loader.style.display = 'none';
-                resBox.style.display = 'block';
-                imgOut.style.display = 'none';
-                textOut.style.display = 'block';
-                
-                textOut.innerHTML = `
-                    <p style="margin-bottom:10px;">🔊 <strong>جاري قراءة النص بصوت واضح:</strong></p>
-                    <p style="color:var(--primary-glow);">${prompt}</p>
-                `;
-                
-                const utterance = new SpeechSynthesisUtterance(prompt);
-                utterance.lang = 'ar-SA';
-                window.speechSynthesis.speak(utterance);
-                useCredit();
-            } else {
-                // كتابة محتوى
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    resBox.style.display = 'block';
-                    imgOut.style.display = 'none';
-                    textOut.style.display = 'block';
-                    textOut.innerHTML = `<h3>📝 محتوى منشأ حول: ${prompt}</h3><p style="margin-top:10px;">هذا النص تم توليده بناءً على طلبك بالذكاء الاصطناعي بشكل دقيق وجاهز للنشر.</p>`;
-                    useCredit();
-                }, 1200);
+                alert("حدث خطأ أثناء التوليد، حاول مرة أخرى.");
             }
         }
 
