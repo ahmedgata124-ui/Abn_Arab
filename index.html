@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ابن العرب AI - التوليد السريع</title>
+    <title>ابن العرب AI - التوليد السريع الحقيقي</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Firebase SDKs (Compat version for browser) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
@@ -175,6 +175,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: opacity 0.3s;
         }
 
         .result-box {
@@ -187,6 +188,7 @@
             max-width: 100%;
             border-radius: 16px;
             border: 1px solid var(--border-glow);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .loader {
@@ -216,21 +218,21 @@
     </nav>
 
     <div class="hero">
-        <h1>توليد صور الذكاء الاصطناعي <span>الفائق ⚡</span></h1>
-        <p style="color:var(--text-dim);">اكتب الوصف بالعربي للحصول على صورة عالية الجودة بسرعة:</p>
+        <h1>توليد صور الذكاء الاصطناعي <span>الفائق (FLUX) ⚡</span></h1>
+        <p style="color:var(--text-dim);">اكتب الوصف بالعربي وسيتم إنشاء الصورة خلال ثوانٍ معدودة:</p>
     </div>
 
     <div class="container">
         <div class="workspace">
-            <textarea id="user-prompt" placeholder="اكتب وصف الصورة هنا... (مثال: محارب عربي يرتدي درعاً ذهبياً في المستقبلي)"></textarea>
+            <textarea id="user-prompt" placeholder="اكتب وصف الصورة هنا... (مثال: سيارة رياضية مستقبلية في شوارع القاهرة ليلاً)"></textarea>
 
-            <button class="btn-generate" onclick="runFastGenerator()">
-                <i class="fa-solid fa-bolt"></i> توليد الصورة الآن
+            <button class="btn-generate" id="gen-btn" onclick="runFastGenerator()">
+                <i class="fa-solid fa-bolt"></i> توليد الصورة فوراً
             </button>
 
             <div class="loader" id="loader">
-                <i class="fa-solid fa-bolt-lightning fa-spin fa-2x"></i>
-                <p style="margin-top:10px;">جاري التوليد السريع...</p>
+                <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                <p style="margin-top:10px;" id="status-text">جاري إرسال الطلب ومعالجة الصورة عبر السيرفر السريع...</p>
             </div>
 
             <div class="result-box" id="result-box">
@@ -240,7 +242,6 @@
     </div>
 
     <script>
-        // إعدادات Firebase الخاصة بك
         const firebaseConfig = {
             apiKey: "AIzaSyC2Dbppgjk09edIskPX5OM-ujoqKXLJRDA",
             authDomain: "abn-arab-ai.firebaseapp.com",
@@ -290,28 +291,48 @@
             const loader = document.getElementById('loader');
             const resBox = document.getElementById('result-box');
             const imgOut = document.getElementById('out-img');
+            const genBtn = document.getElementById('gen-btn');
+            const statusText = document.getElementById('status-text');
 
             loader.style.display = 'block';
             resBox.style.display = 'none';
+            genBtn.disabled = true;
+            genBtn.style.opacity = '0.5';
 
             try {
-                // ترجمة سريعة للوصف
+                // 1. ترجمة النص بسرعة للإنجليزية
+                statusText.innerText = "جاري ترجمة الوصف للإنجليزية...";
                 const trans = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=en&dt=t&q=${encodeURIComponent(prompt)}`);
                 const transData = await trans.json();
                 const enPrompt = transData[0][0][0];
 
-                // التوليد عبر محرك flux-schnell السريع
-                const imgUrl = `https://pollinations.ai/p/${encodeURIComponent(enPrompt)}?width=512&height=512&seed=${Math.floor(Math.random()*1000000)}&model=flux-schnell&nologo=true`;
-                
-                imgOut.src = imgUrl;
-                imgOut.onload = () => {
-                    loader.style.display = 'none';
-                    resBox.style.display = 'block';
-                    useCredit();
-                };
+                // 2. طلب الصورة مباشر من HuggingFace API المباشر (FLUX.1-schnell)
+                statusText.innerText = "جاري رسم الصورة بواسطة FLUX AI (خلال 3-5 ثوانٍ)...";
+                const response = await fetch("https://router.huggingface.co/hf-inference/v1/models/black-forest-labs/FLUX.1-schnell", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ inputs: enPrompt })
+                });
+
+                if (!response.ok) {
+                    throw new Error("السيرفر مشغول، يرجى المحاولة بعد لحظات.");
+                }
+
+                // 3. التحويل لملف صورة وتحديث الشاشة فوراً
+                const blob = await response.blob();
+                const imageObjectURL = URL.createObjectURL(blob);
+
+                imgOut.src = imageObjectURL;
+                loader.style.display = 'none';
+                resBox.style.display = 'block';
+                useCredit();
+
             } catch (err) {
                 loader.style.display = 'none';
-                alert("حدث خطأ أثناء التوليد، حاول مرة أخرى.");
+                alert("حدث خطأ أثناء الاتصال بالذكاء الاصطناعي: " + err.message);
+            } finally {
+                genBtn.disabled = false;
+                genBtn.style.opacity = '1';
             }
         }
 
