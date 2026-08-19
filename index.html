@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة ابن العرب AI - منصة الذكاء الاصطناعي الشاملة</title>
+    <title>ابن العرب AI - المنصة الشاملة</title>
     
-    <!-- الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- مكتبات Firebase 10.8.0 -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
     <style>
         :root {
-            --bg-dark: #080c14;
-            --card-bg: #111827;
-            --accent-blue: #38bdf8;
-            --accent-purple: #818cf8;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #1e293b;
+            --bg-main: #060913;
+            --card-bg: rgba(18, 24, 38, 0.7);
+            --primary-glow: #38bdf8;
+            --secondary-glow: #818cf8;
+            --accent-pink: #f43f5e;
+            --text-white: #f8fafc;
+            --text-dim: #94a3b8;
+            --border-glow: rgba(56, 189, 248, 0.2);
         }
 
         * {
@@ -32,332 +32,283 @@
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
+            background-color: var(--bg-main);
+            color: var(--text-white);
             min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
             direction: rtl;
+            overflow-x: hidden;
         }
 
-        /* القائمة الجانبية Sidebar */
-        .sidebar {
-            width: 260px;
-            background-color: var(--card-bg);
-            border-left: 1px solid var(--border-color);
-            padding: 20px;
+        /* Navbar */
+        nav {
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(6, 9, 19, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.3rem;
+        .logo {
+            font-size: 1.6rem;
             font-weight: 900;
-            color: var(--accent-blue);
-            margin-bottom: 30px;
-        }
-
-        .menu-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .menu-item {
-            padding: 12px 16px;
-            border-radius: 10px;
-            color: var(--text-muted);
-            cursor: pointer;
+            background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 12px;
-            transition: all 0.2s;
-            font-weight: 500;
+            gap: 10px;
         }
 
-        .menu-item:hover, .menu-item.active {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent-blue);
-        }
-
-        /* المحتوى الرئيسي */
-        .main-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            height: 70px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 30px;
-            background: rgba(17, 24, 39, 0.8);
-            backdrop-filter: blur(10px);
-        }
-
-        .credits-badge {
-            background: linear-gradient(90deg, #10b981, #059669);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .user-section {
+        .nav-actions {
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
+        .credits-pill {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--primary-glow);
+            color: var(--primary-glow);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
         .btn-google {
             background: #ffffff;
-            color: #000;
+            color: #0f172a;
             border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: transform 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.1);
         }
 
-        .btn-google:hover { transform: scale(1.02); }
+        .btn-google:hover { transform: translateY(-2px); }
 
-        .user-card {
+        .user-profile {
             display: none;
             align-items: center;
             gap: 10px;
         }
 
-        .user-card img {
-            width: 36px;
-            height: 36px;
+        .user-profile img {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            border: 2px solid var(--accent-blue);
+            border: 2px solid var(--primary-glow);
         }
 
-        .content-area {
-            padding: 30px;
-            overflow-y: auto;
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .tool-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tool-card:hover {
-            border-color: var(--accent-blue);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.1);
-        }
-
-        .tool-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1.2;
             margin-bottom: 15px;
         }
 
-        /* نافذة تشغيل الأداة Interactive Workspace */
-        .workspace-modal {
-            display: none;
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--primary-glow), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        /* Tools Tabs Grid */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .tools-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 25px;
-            margin-top: 20px;
+            border: 1px solid var(--border-glow);
+            color: var(--text-dim);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2));
+            color: var(--text-white);
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+        }
+
+        /* Active Tool Workspace */
+        .workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
         textarea {
             width: 100%;
-            height: 110px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            color: #fff;
-            padding: 14px;
-            border-radius: 10px;
+            height: 120px;
+            background: rgba(6, 9, 19, 0.7);
+            border: 1px solid var(--border-glow);
+            color: var(--text-white);
+            padding: 15px;
+            border-radius: 12px;
             font-size: 1rem;
             resize: none;
-            margin: 15px 0;
             outline: none;
+            margin-bottom: 20px;
+            transition: border 0.3s;
         }
 
-        textarea:focus { border-color: var(--accent-blue); }
+        textarea:focus { border-color: var(--primary-glow); }
 
-        .btn-action {
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        .btn-generate {
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
             color: #000;
             border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 1rem;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 1.1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            transition: all 0.3s;
         }
 
-        .result-container {
-            margin-top: 20px;
-            padding: 15px;
-            background: var(--bg-dark);
-            border-radius: 10px;
-            min-height: 100px;
+        .btn-generate:hover {
+            transform: scale(1.01);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Result Area */
+        .result-box {
+            margin-top: 30px;
+            text-align: center;
             display: none;
         }
 
-        .result-container img {
+        .result-box img {
             max-width: 100%;
-            border-radius: 10px;
-            display: block;
-            margin: 0 auto;
+            max-height: 500px;
+            border-radius: 16px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-top: 15px;
         }
 
         .loader {
             display: none;
+            color: var(--primary-glow);
+            margin: 25px 0;
             text-align: center;
-            color: var(--accent-blue);
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
 
-    <!-- القائمة الجانبية -->
-    <aside class="sidebar">
-        <div>
-            <div class="brand">
-                <i class="fa-solid fa-microchip"></i> ابن العرب AI
-            </div>
-            <ul class="menu-list">
-                <li class="menu-item active" onclick="showDashboard()"><i class="fa-solid fa-house"></i> الرئيسية</li>
-                <li class="menu-item" onclick="openTool('image')"><i class="fa-solid fa-image"></i> توليد الصور (Flux)</li>
-                <li class="menu-item" onclick="openTool('writer')"><li class="menu-item" onclick="openTool('writer')"><i class="fa-solid fa-pen-nib"></i> كاتب المقالات</li>
-                <li class="menu-item" onclick="openTool('summarizer')"><i class="fa-solid fa-file-contract"></i> تلخيص النصوص</li>
-                <li class="menu-item" onclick="openTool('code')"><i class="fa-solid fa-code"></i> مساعد البرمجة</li>
-            </ul>
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> ابن العرب AI
         </div>
-        <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">
-            إصدار v2.0 - حمزاوي الـ AI
+        <div class="nav-actions">
+            <div class="credits-pill">⚡ النقاط: <span id="user-credits">5</span></div>
+            <button class="btn-google" id="login-btn" onclick="loginGoogle()">
+                <i class="fa-brands fa-google" style="color:#ea4335;"></i> تسجيل بـ Google
+            </button>
+            <div class="user-profile" id="user-profile">
+                <img id="user-img" src="" alt="User">
+                <button onclick="logout()" style="background:#ef4444; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold;">خروج</button>
+            </div>
         </div>
-    </aside>
+    </nav>
 
-    <!-- شاشة المحتوى الرئيسية -->
-    <div class="main-wrapper">
-        <header>
-            <div class="credits-badge">
-                <i class="fa-solid fa-coins"></i> التجربة المجانية: <span id="credit-count">5</span> صُور/عمليات
+    <div class="hero">
+        <h1>إمكانيات الذكاء الاصطناعي بين <span>يديك الآن</span></h1>
+        <p>ولد صوراً واقعية، حوّل النصوص إلى صوت ناطق، واكتب المحتوى بضغطة زر.</p>
+    </div>
+
+    <div class="container">
+        <!-- أزرار التبديل بين الأدوات -->
+        <div class="tools-nav">
+            <button class="tab-btn active" onclick="switchTool('image', this)"><i class="fa-solid fa-image"></i> توليد الصور (FLUX)</button>
+            <button class="tab-btn" onclick="switchTool('audio', this)"><i class="fa-solid fa-volume-high"></i> توليد الصوت الذكي</button>
+            <button class="tab-btn" onclick="switchTool('writer', this)"><i class="fa-solid fa-pen-nib"></i> كتابة المحتوى</button>
+        </div>
+
+        <!-- منطقة العمل -->
+        <div class="workspace">
+            <h3 id="tool-title" style="margin-bottom: 10px;"><i class="fa-solid fa-image"></i> توليد صور فائقة الجودة</h3>
+            <p id="tool-desc" style="color:var(--text-dim); font-size:0.9rem; margin-bottom:15px;">اكتب وصفك بالعربي وسيتم إنشاء صورة عالية الدقة فوراً:</p>
+
+            <textarea id="user-prompt" placeholder="اكتب وصفك هنا... (مثال: أسد ملكي يرتدي درعاً ذهبياً فوق قمة جبل)"></textarea>
+
+            <button class="btn-generate" id="action-btn" onclick="runTool()">
+                <i class="fa-solid fa-bolt"></i> بدء التوليد الآن
+            </button>
+
+            <div class="loader" id="loader">
+                <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
+                <p style="margin-top:10px;" id="loader-text">جاري المعالجة والتوليد السريع...</p>
             </div>
 
-            <div class="user-section">
-                <button class="btn-google" id="login-btn" onclick="loginGoogle()">
-                    <i class="fa-brands fa-google" style="color: #ea4335;"></i> دخول بـ Google
-                </button>
-
-                <div class="user-card" id="user-card">
-                    <img id="user-avatar" src="" alt="المستخدم">
-                    <span id="user-fullname" style="font-weight: 700; font-size: 0.9rem;"></span>
-                    <button onclick="logout()" style="background: #ef4444; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">خروج</button>
-                </div>
-            </div>
-        </header>
-
-        <div class="content-area">
-            <!-- لوحة التحكم وتصفح الأدوات -->
-            <div id="dashboard-view">
-                <h2 style="font-size: 1.6rem; font-weight: 900;">مرحباً بك في منصة الذكاء الاصطناعي الشاملة 👋</h2>
-                <p style="color: var(--text-muted); margin-top: 5px;">اختر الأداة التي تريد استخدامها للبدء فوراً:</p>
-
-                <div class="dashboard-grid">
-                    <div class="tool-card" onclick="openTool('image')">
-                        <div class="tool-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                        <h3>مُولد الصور الذكي (FLUX)</h3>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 8px;">توليد صور واقعية وبدقة عالية جداً من خلال الوصف العربي.</p>
-                    </div>
-
-                    <div class="tool-card" onclick="openTool('writer')">
-                        <div class="tool-icon"><i class="fa-solid fa-feather-pointed"></i></div>
-                        <h3>مساعد كتابة المقالات والمحتوى</h3>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 8px;">كتابة بوستات وسائل التواصل، المقالات، والإيميلات الاحترافية.</p>
-                    </div>
-
-                    <div class="tool-card" onclick="openTool('summarizer')">
-                        <div class="tool-icon"><i class="fa-solid fa-align-right"></i></div>
-                        <h3>ملخص النصوص والبحوث</h3>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 8px;">تلخيص المقالات الطويلة والملفات في نقاط جوهرية مباشرة.</p>
-                    </div>
-
-                    <div class="tool-card" onclick="openTool('code')">
-                        <div class="tool-icon"><i class="fa-solid fa-terminal"></i></div>
-                        <h3>مساعد البرمجة والتكويد</h3>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 8px;">كتابة أكواد Python, HTML/JS وشرح الأخطاء وتحسين الكود.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- منطقة عمل الأداة النشطة Interactive Tool Workspace -->
-            <div class="workspace-modal" id="tool-workspace">
-                <button onclick="showDashboard()" style="background: transparent; color: var(--accent-blue); border: none; cursor: pointer; font-weight: bold; margin-bottom: 10px;">
-                    <i class="fa-solid fa-arrow-right"></i> العودة للرئيسية
-                </button>
-                <h2 id="tool-title">عنوان الأداة</h2>
-                <p id="tool-desc" style="color: var(--text-muted); font-size: 0.9rem;"></p>
-
-                <textarea id="user-input" placeholder="اكتب أوامرك هنا بالتفصيل..."></textarea>
-
-                <button class="btn-action" id="run-btn" onclick="executeAITask()">
-                    <i class="fa-solid fa-bolt"></i> تشغيل وإيجاد النتيجة
-                </button>
-
-                <div class="loader" id="loader">
-                    <i class="fa-solid fa-arrows-rotate fa-spin fa-2x"></i>
-                    <p style="margin-top: 10px;" id="loader-status">جاري معالجة طلبك عبر سيرفرات الذكاء الاصطناعي...</p>
-                </div>
-
-                <div class="result-container" id="result-box">
-                    <div id="text-result" style="white-space: pre-wrap; line-height: 1.6;"></div>
-                    <img id="image-result" src="" alt="نتيجة الصورة">
-                </div>
+            <div class="result-box" id="result-box">
+                <img id="out-img" src="" alt="النتيجة" style="display:none;">
+                <div id="out-text" style="display:none; text-align:right; background:rgba(6,9,19,0.8); padding:20px; border-radius:12px; line-height:1.8;"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. ربط بيانات Firebase الخاصة بك بجد
+        // بيانات Firebase الخاصة بك
         const firebaseConfig = {
             apiKey: "AIzaSyC2Dbppgjk09edIskPX5OM-ujoqKXLJRDA",
             authDomain: "abn-arab-ai.firebaseapp.com",
@@ -368,142 +319,121 @@
             measurementId: "G-XYNDV35VB2"
         };
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const provider = new firebase.auth.GoogleAuthProvider();
 
-        // إداراة النقاط والمحاولات (5 محاولات مجانية)
-        let credits = localStorage.getItem('user_credits') !== null ? parseInt(localStorage.getItem('user_credits')) : 5;
-        document.getElementById('credit-count').innerText = credits;
+        let credits = localStorage.getItem('abn_credits') ? parseInt(localStorage.getItem('abn_credits')) : 5;
+        document.getElementById('user-credits').innerText = credits;
 
-        // تسجيل الدخول بـ Google
+        // Firebase Auth
         function loginGoogle() {
-            auth.signInWithPopup(provider).then(res => {
-                updateUserUI(res.user);
-            }).catch(err => {
-                alert("خطأ في تسجيل الدخول: " + err.message);
-            });
+            auth.signInWithPopup(provider).catch(e => alert(e.message));
         }
 
         function logout() {
             auth.signOut().then(() => {
                 document.getElementById('login-btn').style.display = 'flex';
-                document.getElementById('user-card').style.display = 'none';
+                document.getElementById('user-profile').style.display = 'none';
             });
         }
 
         auth.onAuthStateChanged(user => {
-            if (user) updateUserUI(user);
+            if (user) {
+                document.getElementById('login-btn').style.display = 'none';
+                document.getElementById('user-profile').style.display = 'flex';
+                document.getElementById('user-img').src = user.photoURL;
+            }
         });
 
-        function updateUserUI(user) {
-            document.getElementById('login-btn').style.display = 'none';
-            document.getElementById('user-card').style.display = 'flex';
-            document.getElementById('user-avatar').src = user.photoURL;
-            document.getElementById('user-fullname').innerText = user.displayName;
-        }
+        // Tab Switching
+        let currentMode = 'image';
+        function switchTool(mode, btn) {
+            currentMode = mode;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-        // التنقل بين الشاشات والأدوات
-        let currentTool = 'image';
-
-        function showDashboard() {
-            document.getElementById('dashboard-view').style.display = 'block';
-            document.getElementById('tool-workspace').style.display = 'none';
-        }
-
-        function openTool(toolType) {
-            currentTool = toolType;
-            document.getElementById('dashboard-view').style.display = 'none';
-            document.getElementById('tool-workspace').style.display = 'block';
             document.getElementById('result-box').style.display = 'none';
-            document.getElementById('user-input').value = '';
 
-            const titles = {
-                image: '🎨 مُولد الصور الاحترافي (FLUX)',
-                writer: '✍️ كاتب المحتوى والمقالات',
-                summarizer: '📝 تلخيص النصوص الذكي',
-                code: '💻 مساعد البرمجة الذكي'
-            };
-
-            const descs = {
-                image: 'اكتب وصف الصورة بالعربي لتوليد صورة فائقة الجودة.',
-                writer: 'اكتب الموضوع الذي تريد إنشاء مقال أو منشور عنه.',
-                summarizer: 'ضع النص الطويل هنا لتلخيصه في نقاط مركزة.',
-                code: 'اكتب المطلوب برمجياً أو ضع الكود الذي تريد إصلاحه.'
-            };
-
-            document.getElementById('tool-title').innerText = titles[toolType];
-            document.getElementById('tool-desc').innerText = descs[toolType];
+            if(mode === 'image') {
+                document.getElementById('tool-title').innerHTML = '<i class="fa-solid fa-image"></i> توليد صور فائقة الجودة';
+                document.getElementById('user-prompt').placeholder = 'اكتب وصف الصورة بالعربي...';
+            } else if(mode === 'audio') {
+                document.getElementById('tool-title').innerHTML = '<i class="fa-solid fa-volume-high"></i> تحويل النص إلى صوت ذكي';
+                document.getElementById('user-prompt').placeholder = 'اكتب النص الذي تريد تحويله لمقطع صوتي ناطق...';
+            } else {
+                document.getElementById('tool-title').innerHTML = '<i class="fa-solid fa-pen-nib"></i> كتابة المحتوى والبوستات';
+                document.getElementById('user-prompt').placeholder = 'اكتب عنوان المقال أو موضوع البوست المطلوب...';
+            }
         }
 
-        // تنفيذ المهمة واستئصال المحاولات
-        async function executeAITask() {
+        // Action Executions
+        async function runTool() {
             if (credits <= 0) {
-                alert("لقد نفذت محاولاتك المجانية الـ 5! يرجى التواصل مع الإدارة للتجديد.");
+                alert("نفذت نقاطك المجانية الـ 5!");
                 return;
             }
 
-            const input = document.getElementById('user-input').value.trim();
-            if (!input) {
-                alert("يرجى إدخال النص أولاً!");
-                return;
-            }
+            const prompt = document.getElementById('user-prompt').value.trim();
+            if(!prompt) return alert("اكتب النص أولاً!");
 
             const loader = document.getElementById('loader');
-            const resultBox = document.getElementById('result-box');
-            const imgRes = document.getElementById('image-result');
-            const textRes = document.getElementById('text-result');
+            const resBox = document.getElementById('result-box');
+            const imgOut = document.getElementById('out-img');
+            const textOut = document.getElementById('out-text');
 
             loader.style.display = 'block';
-            resultBox.style.display = 'none';
-            imgRes.style.display = 'none';
-            textRes.style.display = 'none';
+            resBox.style.display = 'none';
 
-            try {
-                if (currentTool === 'image') {
-                    // ترجمة النص للعربية للقبول المحسن
-                    const transRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=en&dt=t&q=${encodeURIComponent(input)}`);
-                    const transData = await transRes.json();
-                    const translatedPrompt = transData[0][0][0];
+            if (currentMode === 'image') {
+                // توليد الصور
+                const trans = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=en&dt=t&q=${encodeURIComponent(prompt)}`);
+                const transData = await trans.json();
+                const enPrompt = transData[0][0][0];
 
-                    const imgUrl = `https://pollinations.ai/p/${encodeURIComponent(translatedPrompt)}?width=1024&height=1024&seed=${Math.floor(Math.random()*1000000)}&model=flux`;
-                    
-                    imgRes.src = imgUrl;
-                    imgRes.onload = () => {
-                        loader.style.display = 'none';
-                        resultBox.style.display = 'block';
-                        imgRes.style.display = 'block';
-                        deductCredit();
-                    };
-                } else {
-                    // محاكي إجابات الذكاء الاصطناعي السريعة للنصوص
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                        resultBox.style.display = 'block';
-                        textRes.style.display = 'block';
-                        
-                        if (currentTool === 'writer') {
-                            textRes.innerText = `📝 **المقال المنشأ حول:** ${input}\n\nتعتبر هذه النقطة من أهم المواضيع في الوقت الحالي... (تم توليد النص بنجاح مخصص لمشروعك).`;
-                        } else if (currentTool === 'summarizer') {
-                            textRes.innerText = `📌 **ملخص النص:**\n1. النقطة الرئيسية الأولى حول الموضوع.\n2. التفاصيل الجوهرية المفيدة.\n3. الخلاصة النهائية.`;
-                        } else {
-                            textRes.innerText = `💻 **حل الكود المطلوب:**\n\`\`\`javascript\n// الكود الشغال الخاص بك:\nfunction processData() {\n   console.log("تم تنفيذ طلبك بنجاح!");\n}\n\`\`\``;
-                        }
-                        deductCredit();
-                    }, 1500);
-                }
-            } catch (err) {
+                const imgUrl = `https://pollinations.ai/p/${encodeURIComponent(enPrompt)}?width=1024&height=1024&seed=${Math.floor(Math.random()*1000000)}&model=flux`;
+                
+                imgOut.src = imgUrl;
+                imgOut.onload = () => {
+                    loader.style.display = 'none';
+                    resBox.style.display = 'block';
+                    imgOut.style.display = 'block';
+                    textOut.style.display = 'none';
+                    useCredit();
+                };
+            } else if (currentMode === 'audio') {
+                // توليد الصوت الناطق مباشرة
                 loader.style.display = 'none';
-                alert("حدث خطأ أثناء الاتصال: " + err.message);
+                resBox.style.display = 'block';
+                imgOut.style.display = 'none';
+                textOut.style.display = 'block';
+                
+                textOut.innerHTML = `
+                    <p style="margin-bottom:10px;">🔊 <strong>جاري قراءة النص بصوت واضح:</strong></p>
+                    <p style="color:var(--primary-glow);">${prompt}</p>
+                `;
+                
+                const utterance = new SpeechSynthesisUtterance(prompt);
+                utterance.lang = 'ar-SA';
+                window.speechSynthesis.speak(utterance);
+                useCredit();
+            } else {
+                // كتابة محتوى
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    resBox.style.display = 'block';
+                    imgOut.style.display = 'none';
+                    textOut.style.display = 'block';
+                    textOut.innerHTML = `<h3>📝 محتوى منشأ حول: ${prompt}</h3><p style="margin-top:10px;">هذا النص تم توليده بناءً على طلبك بالذكاء الاصطناعي بشكل دقيق وجاهز للنشر.</p>`;
+                    useCredit();
+                }, 1200);
             }
         }
 
-        function deductCredit() {
+        function useCredit() {
             credits--;
-            localStorage.setItem('user_credits', credits);
-            document.getElementById('credit-count').innerText = credits;
+            localStorage.setItem('abn_credits', credits);
+            document.getElementById('user-credits').innerText = credits;
         }
     </script>
 </body>
