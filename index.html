@@ -1,227 +1,506 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هيثم AI | منصة الذكاء الاصطناعي الاحترافية</title>
-    <!-- استدعاء خط Tajawal من Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+    <title>ابن العرب AI | Abn ElArab AI - منصة الذكاء الاصطناعي الشاملة</title>
+    <!-- خط Tajawal من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <!-- أيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        :root {
+            --bg-main: #090d16;
+            --bg-card: #131b2e;
+            --primary: #38bdf8;
+            --primary-accent: #818cf8;
+            --secondary: #a855f7;
+            --whatsapp-green: #22c55e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Tajawal', sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: #0b0f19;
-            color: #ffffff;
-            line-height: 1.6;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
         }
 
-        /* الهيدر وقائمة التنقل */
+        /* Navbar Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            background-color: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
+            padding: 18px 8%;
+            background-color: rgba(9, 13, 22, 0.85);
+            backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #1e293b;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .logo {
-            display: inline-block;
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: transparent;
-            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            font-size: 1.9rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 20px;
+            gap: 25px;
         }
 
         .nav-links a {
-            color: #94a3b8;
+            color: var(--text-muted);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.05rem;
             transition: color 0.3s;
         }
 
         .nav-links a:hover {
-            color: #38bdf8;
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
         }
 
         .btn-login {
-            background-color: #0284c7;
+            background: linear-gradient(135deg, #0284c7, #0369a1);
             color: #fff;
-            padding: 8px 20px;
+            padding: 9px 22px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: transform 0.2s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
         }
 
         .btn-login:hover {
-            background-color: #0369a1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
         }
 
-        /* القسم الرئيسي (Hero Section) */
+        /* Hero Section */
         .hero {
             text-align: center;
-            padding: 100px 20px 60px;
-            max-width: 900px;
+            padding: 110px 20px 80px;
+            max-width: 950px;
             margin: 0 auto;
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 800;
+        .badge {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            display: inline-block;
             margin-bottom: 20px;
-            background: linear-gradient(90deg, #38bdf8, #a855f7);
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 25px;
+            line-height: 1.25;
+            background: linear-gradient(90deg, #38bdf8, #a855f7, #f43f5e);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 1.25rem;
-            color: #94a3b8;
-            margin-bottom: 30px;
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
         }
 
         .hero-btns {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .btn-whatsapp {
-            background-color: #22c55e;
+            background-color: var(--whatsapp-green);
             color: #fff;
-            padding: 12px 28px;
-            border-radius: 8px;
+            padding: 14px 32px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 1.1rem;
-            transition: opacity 0.3s;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s, transform 0.2s;
         }
 
         .btn-whatsapp:hover {
-            opacity: 0.9;
+            background-color: #16a34a;
+            transform: translateY(-2px);
         }
 
-        /* قسم الخدمات */
+        /* Features Section */
         .features {
-            padding: 60px 8%;
-            max-width: 1200px;
+            padding: 80px 8%;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
-        .features h2 {
+        .section-title {
             text-align: center;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            color: #f8fafc;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: 8px;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .card {
-            background-color: #1e293b;
+            background-color: var(--bg-card);
             padding: 30px;
-            border-radius: 12px;
-            border: 1px solid #334155;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
             transition: transform 0.3s, border-color 0.3s;
+            position: relative;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            border-color: #38bdf8;
+            transform: translateY(-7px);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
         }
 
         .card h3 {
-            color: #38bdf8;
-            margin-bottom: 10px;
-            font-size: 1.3rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            font-size: 1.35rem;
         }
 
         .card p {
-            color: #94a3b8;
-            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-size: 1rem;
         }
 
-        /* الفوتر */
+        /* Pricing Section */
+        .pricing {
+            background-color: rgba(19, 27, 46, 0.4);
+            padding: 80px 8%;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .price-card.popular {
+            border-color: var(--primary);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.15);
+        }
+
+        .price-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+
+        .price-features li {
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-features li i {
+            color: var(--whatsapp-green);
+        }
+
+        /* Footer & Modal */
         footer {
             text-align: center;
-            padding: 30px;
-            border-top: 1px solid #1e293b;
-            color: #64748b;
-            margin-top: 50px;
+            padding: 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-main);
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
+    <!-- الهيدر وقائمة التنقل -->
     <header>
-        <a href="#" class="logo">هيثم AI</a>
+        <a href="#" class="logo">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> ابن العرب AI
+        </a>
         <ul class="nav-links">
-            <li><a href="#features">الأدوات</a></li>
-            <li><a href="#pricing">الباقات</a></li>
+            <li><a href="#features">الأدوات والخدمات</a></li>
+            <li><a href="#pricing">الباقات والتكلفة</a></li>
             <li><a href="#contact">التواصل</a></li>
         </ul>
-        <a href="#login" class="btn-login">تسجيل الدخول</a>
+        <div class="header-actions">
+            <button class="btn-login" onclick="openModal()">تسجيل الدخول</button>
+        </div>
     </header>
 
+    <!-- القسم الرئيسي (Hero Section) -->
     <section class="hero">
-        <h1>منصة هيثم AI لأدوات الذكاء الاصطناعي</h1>
-        <p>قم بإنشاء الفيديوهات، الصور، الأفاتار، والأصوات فائقة الجودة بسهولة وبسرعة فائقة.</p>
+        <span class="badge"><i class="fa-solid fa-bolt"></i> المنصة العربية الأحدث للذكاء الاصطناعي</span>
+        <h1>منصة ابن العرب AI لإبداع لا محدود</h1>
+        <p>صمم الصور، انشئ الفيديوهات الاحترافية، استنسخ الأصوات، واصنع الأفاتار الرقمي المتكلم في مكان واحد وبأعلى جودة.</p>
         <div class="hero-btns">
-            <a href="https://wa.me/" target="_blank" class="btn-whatsapp">تواصل عبر واتساب</a>
-            <a href="#pricing" class="btn-login">اكتشف الباقات</a>
+            <a href="https://wa.me/201213023568" target="_blank" class="btn-whatsapp">
+                <i class="fa-brands fa-whatsapp"></i> تواصل عبر واتساب (01213023568)
+            </a>
+            <a href="#pricing" class="btn-login" style="padding: 14px 28px; font-size: 1.1rem; text-decoration: none;">
+                اكتشف الباقات
+            </a>
         </div>
     </section>
 
+    <!-- قسم الخدمات والأدوات الشاملة -->
     <section class="features" id="features">
-        <h2>ماذا تقدم منصة هيثم AI؟</h2>
+        <div class="section-title">
+            <h2>ماذا تقدم منصة ابن العرب AI؟</h2>
+            <p>مجموعة متكاملة من أحدث أدوات الذكاء الاصطناعي بين يديك</p>
+        </div>
         <div class="grid">
             <div class="card">
-                <h3>توليد الفيديوهات</h3>
-                <p>صناعة فيديوهات احترافية باستخدام أحدث نماذج توليد الفيديو الذكية.</p>
+                <div class="card-icon"><i class="fa-solid fa-video"></i></div>
+                <h3>توليد الفيديوهات (Text to Video)</h3>
+                <p>صناعة فيديوهات احترافية بدقة فائقة من خلال الوصف النصي أو تحويل الصور الثابتة إلى فيديو متحرك.</p>
             </div>
             <div class="card">
-                <h3>تصميم الصور</h3>
-                <p>إنشاء تصاميم وصور فائقة الدقة والواقعية عبر أوامر نصية بسيطة.</p>
+                <div class="card-icon"><i class="fa-solid fa-palette"></i></div>
+                <h3>تصميم الصور وتعديلها</h3>
+                <p>إنشاء تصاميم وصور واقعية عبر أوامر نصية بسيطة مع إمكانية تعديل الخلفيات والوجوه بدقة عالية.</p>
             </div>
             <div class="card">
-                <h3>صناعة الأفاتار</h3>
-                <p>تحويل الملامح والصور الشخصية إلى أفاتار رقمي متكلم وأنيق.</p>
+                <div class="card-icon"><i class="fa-solid fa-user-astronaut"></i></div>
+                <h3>صناعة الأفاتار المتكلم</h3>
+                <p>تحويل الصور الشخصية إلى أفاتار رقمي يتحدث باللغة العربية والإنجليزية بصوت نقي ومزامن حركة الشفاه.</p>
             </div>
             <div class="card">
-                <h3>توليد الصوت</h3>
-                <p>استنساخ الأصوات وتحويل النصوص إلى مقاطع صوتية بشرية واقعية.</p>
+                <div class="card-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+                <h3>هندسة واستنساخ الصوت</h3>
+                <p>تحويل النصوص إلى مقاطع صوتية واقعية، واستنساخ الأصوات البشرية بدقة متناهية لنطق أي نص.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <h3>تحسين جودة الميديا</h3>
+                <p>رفع جودة الصور والفيديوهات القديمة أو ضعيفة الدقة إلى دقة 4K بنقرة زر واحدة.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-headset"></i></div>
+                <h3>دعم وتفعيل فوري</h3>
+                <p>تفعيل الحسابات وشحن نقاط الاستخدام فوراً وبكل سهولة عبر التواصل المباشر مع الدعم الفني.</p>
             </div>
         </div>
     </section>
 
-    <footer>
-        <p>جميع الحقوق محفوظة © 2026 - منصة هيثم AI</p>
+    <!-- قسم الباقات والاشتراكات -->
+    <section class="pricing" id="pricing">
+        <div class="section-title">
+            <h2>باقات الشحن والاشتراك</h2>
+            <p>اختر الباقة المناسبة لاحتياجاتك وابدأ في استخدام المنصة</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>الباقة المبتدئة</h3>
+                <div class="price">100 <span>جنيه / شهرياً</span></div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-check"></i> توليد حتى 50 صورة عالية الدقة</li>
+                    <li><i class="fa-solid fa-check"></i> إنشاء 5 فيديوهات قصيرة</li>
+                    <li><i class="fa-solid fa-check"></i> تحويل النصوص إلى صوت</li>
+                    <li><i class="fa-solid fa-check"></i> دعم عبر واتساب</li>
+                </ul>
+                <a href="https://wa.me/201213023568?text=أريد%20الاشتراك%20في%20الباقة%20المبتدئة" target="_blank" class="btn-login" style="display: block; text-decoration: none;">اشترك الآن</a>
+            </div>
+
+            <div class="price-card popular">
+                <span class="badge" style="position: absolute; top: -15px; right: 50%; transform: translateX(50%);">الأكثر طلباً</span>
+                <h3>الباقة الاحترافية</h3>
+                <div class="price">250 <span>جنيه / شهرياً</span></div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-check"></i> توليد صور غير محدود</li>
+                    <li><i class="fa-solid fa-check"></i> إنشاء 25 فيديو بدقة 4K</li>
+                    <li><i class="fa-solid fa-check"></i> صناعة أفاتار متكلم واستنساخ صوت</li>
+                    <li><i class="fa-solid fa-check"></i> أولوية في التوليد والسيرفرات</li>
+                    <li><i class="fa-solid fa-check"></i> دعم فني مباشر 24/7</li>
+                </ul>
+                <a href="https://wa.me/201213023568?text=أريد%20الاشتراك%20في%20الباقة%20الاحترافية" target="_blank" class="btn-whatsapp" style="justify-content: center; text-decoration: none;">اشترك الآن</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer id="contact">
+        <p>جميع الحقوق محفوظة © 2026 - منصة ابن العرب AI (Abn ElArab AI)</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">للتواصل والدعم الفني: 01213023568</p>
     </footer>
 
+    <!-- نافذة تسجيل الدخول (Modal) -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3 style="margin-bottom: 20px; text-align: center;">تسجيل الدخول - ابن العرب AI</h3>
+            <form onsubmit="event.preventDefault(); alert('تم تسجيل الدخول بنجاح!'); closeModal();">
+                <div class="form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" placeholder="example@domain.com" required>
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-login" style="width: 100%; margin-top: 10px;">دخول</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- كود JavaScript للنافذة التفاعلية -->
+    <script>
+        function openModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            var modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
