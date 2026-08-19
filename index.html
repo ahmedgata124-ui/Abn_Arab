@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ابن العرب AI - التوليد السريع الحقيقي</title>
+    <title>ابن العرب AI - التوليد السريع</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
@@ -218,13 +218,13 @@
     </nav>
 
     <div class="hero">
-        <h1>توليد صور الذكاء الاصطناعي <span>الفائق (FLUX) ⚡</span></h1>
-        <p style="color:var(--text-dim);">اكتب الوصف بالعربي وسيتم إنشاء الصورة خلال ثوانٍ معدودة:</p>
+        <h1>توليد صور الذكاء الاصطناعي <span>الفائق ⚡</span></h1>
+        <p style="color:var(--text-dim);">اكتب الوصف بالعربي وسيتم إنشاء الصورة خلال ثوانٍ:</p>
     </div>
 
     <div class="container">
         <div class="workspace">
-            <textarea id="user-prompt" placeholder="اكتب وصف الصورة هنا... (مثال: سيارة رياضية مستقبلية في شوارع القاهرة ليلاً)"></textarea>
+            <textarea id="user-prompt" placeholder="اكتب وصف الصورة هنا... (مثال: محارب عربي بأسلوب سينمائي حديث)"></textarea>
 
             <button class="btn-generate" id="gen-btn" onclick="runFastGenerator()">
                 <i class="fa-solid fa-bolt"></i> توليد الصورة فوراً
@@ -232,7 +232,7 @@
 
             <div class="loader" id="loader">
                 <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
-                <p style="margin-top:10px;" id="status-text">جاري إرسال الطلب ومعالجة الصورة عبر السيرفر السريع...</p>
+                <p style="margin-top:10px;" id="status-text">جاري معالجة الصورة...</p>
             </div>
 
             <div class="result-box" id="result-box">
@@ -300,39 +300,39 @@
             genBtn.style.opacity = '0.5';
 
             try {
-                // 1. ترجمة النص بسرعة للإنجليزية
-                statusText.innerText = "جاري ترجمة الوصف للإنجليزية...";
+                // 1. ترجمة سريعة للوصف
+                statusText.innerText = "جاري ترجمة الوصف...";
                 const trans = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=en&dt=t&q=${encodeURIComponent(prompt)}`);
                 const transData = await trans.json();
                 const enPrompt = transData[0][0][0];
 
-                // 2. طلب الصورة مباشر من HuggingFace API المباشر (FLUX.1-schnell)
-                statusText.innerText = "جاري رسم الصورة بواسطة FLUX AI (خلال 3-5 ثوانٍ)...";
-                const response = await fetch("https://router.huggingface.co/hf-inference/v1/models/black-forest-labs/FLUX.1-schnell", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ inputs: enPrompt })
-                });
+                // 2. إعداد رابط التوليد السريع
+                statusText.innerText = "جاري رسم الصورة...";
+                const seed = Math.floor(Math.random() * 1000000);
+                const generatedUrl = `https://pollinations.ai/p/${encodeURIComponent(enPrompt)}?width=512&height=512&seed=${seed}&model=flux-schnell&nologo=true`;
 
-                if (!response.ok) {
-                    throw new Error("السيرفر مشغول، يرجى المحاولة بعد لحظات.");
-                }
+                // 3. التحميل المباشر الآمن لمنع خطأ Failed to fetch
+                const tempImg = new Image();
+                tempImg.src = generatedUrl;
 
-                // 3. التحويل لملف صورة وتحديث الشاشة فوراً
-                const blob = await response.blob();
-                const imageObjectURL = URL.createObjectURL(blob);
+                tempImg.onload = () => {
+                    imgOut.src = generatedUrl;
+                    loader.style.display = 'none';
+                    resBox.style.display = 'block';
+                    genBtn.disabled = false;
+                    genBtn.style.opacity = '1';
+                    useCredit();
+                };
 
-                imgOut.src = imageObjectURL;
-                loader.style.display = 'none';
-                resBox.style.display = 'block';
-                useCredit();
+                tempImg.onerror = () => {
+                    throw new Error("عذراً، تعذر إنشاء الصورة حالياً.");
+                };
 
             } catch (err) {
                 loader.style.display = 'none';
-                alert("حدث خطأ أثناء الاتصال بالذكاء الاصطناعي: " + err.message);
-            } finally {
                 genBtn.disabled = false;
                 genBtn.style.opacity = '1';
+                alert(err.message || "حدث خطأ غير متوقع، حاول مرة أخرى.");
             }
         }
 
