@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هيثم AI | منصة الذكاء الاصطناعي الاحترافية</title>
+    <!-- استدعاء خط Tajawal من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* الهيدر وقائمة التنقل */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .logo {
+            display: inline-block;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: transparent;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #38bdf8;
+        }
+
+        .btn-login {
+            background-color: #0284c7;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: #0369a1;
+        }
+
+        /* القسم الرئيسي (Hero Section) */
+        .hero {
+            text-align: center;
+            padding: 100px 20px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #38bdf8, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn-whatsapp {
+            background-color: #22c55e;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: opacity 0.3s;
+        }
+
+        .btn-whatsapp:hover {
+            opacity: 0.9;
+        }
+
+        /* قسم الخدمات */
+        .features {
+            padding: 60px 8%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #f8fafc;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+        }
+
+        .card h3 {
+            color: #38bdf8;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* الفوتر */
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid #1e293b;
+            color: #64748b;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">هيثم AI</a>
+        <ul class="nav-links">
+            <li><a href="#features">الأدوات</a></li>
+            <li><a href="#pricing">الباقات</a></li>
+            <li><a href="#contact">التواصل</a></li>
+        </ul>
+        <a href="#login" class="btn-login">تسجيل الدخول</a>
+    </header>
+
+    <section class="hero">
+        <h1>منصة هيثم AI لأدوات الذكاء الاصطناعي</h1>
+        <p>قم بإنشاء الفيديوهات، الصور، الأفاتار، والأصوات فائقة الجودة بسهولة وبسرعة فائقة.</p>
+        <div class="hero-btns">
+            <a href="https://wa.me/" target="_blank" class="btn-whatsapp">تواصل عبر واتساب</a>
+            <a href="#pricing" class="btn-login">اكتشف الباقات</a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2>ماذا تقدم منصة هيثم AI؟</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>توليد الفيديوهات</h3>
+                <p>صناعة فيديوهات احترافية باستخدام أحدث نماذج توليد الفيديو الذكية.</p>
+            </div>
+            <div class="card">
+                <h3>تصميم الصور</h3>
+                <p>إنشاء تصاميم وصور فائقة الدقة والواقعية عبر أوامر نصية بسيطة.</p>
+            </div>
+            <div class="card">
+                <h3>صناعة الأفاتار</h3>
+                <p>تحويل الملامح والصور الشخصية إلى أفاتار رقمي متكلم وأنيق.</p>
+            </div>
+            <div class="card">
+                <h3>توليد الصوت</h3>
+                <p>استنساخ الأصوات وتحويل النصوص إلى مقاطع صوتية بشرية واقعية.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>جميع الحقوق محفوظة © 2026 - منصة هيثم AI</p>
+    </footer>
+
+</body>
+</html>
