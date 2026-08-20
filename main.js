@@ -1,125 +1,190 @@
-/**
- * استوديو ابن العرب AI - سكريبت التحكم التفاعلي (Modern SaaS JS)
- */
+// 1. استيراد مكتبات Firebase Auth الحديثة
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { 
+    getAuth, 
+    signInWithPopup, 
+    GoogleAuthProvider, 
+    onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-// 1. إدارة الحالة العامة للاستوديو (State Management)
-const studioState = {
-    currentTab: 'generate', // التبويب النشط افتراضياً
-    currentQuality: 'FHD',  // الجودة المحددة افتراضياً
-    costs: {
-        FHD: 2,
-        '4K': 4
+// 2. إعدادات مشروع Firebase الخاص بك
+const firebaseConfig = {
+  apiKey: "AIzaSyC2Dbppgjk09edIskPX5OM-ujoqKXLJRDA",
+  authDomain: "abn-arab-ai.firebaseapp.com",
+  projectId: "abn-arab-ai",
+  storageBucket: "abn-arab-ai.firebasestorage.app",
+  messagingSenderId: "863813080286",
+  appId: "1:863813080286:web:5fd4e1d46380992fdede4f",
+  measurementId: "G-XYNDV35VB2"
+};
+
+// 3. تهيئة Firebase و Google Provider
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// 4. حالة النظام العامة (App State)
+const appState = {
+    isLoggedIn: false,
+    user: null,
+    userCredits: 10, // 10 نقاط تجربة مجانية
+    currentTab: 'generate',
+    currentQuality: 'FHD',
+    costs: { FHD: 2, '4K': 4 }
+};
+
+// 5. دالة تسجيل الدخول بجوجل الحقيقية (Window Global Access)
+window.loginWithGoogle = async function() {
+    try {
+        await signInWithPopup(auth, provider);
+    } catch (error) {
+        console.error("خطأ في تسجيل الدخول عبر Firebase:", error);
+        alert("تعذر فتح نافذة تسجيل الدخول بجوجل، يرجى المحاولة مرة أخرى.");
     }
 };
 
-// 2. دالة التحويل بين التبويبات (Conditional Tab Switcher)
-function switchTab(tabName) {
-    studioState.currentTab = tabName;
+// 6. الاستماع التلقائي لحالة التسجيل وتحديث الزر
+onAuthStateChanged(auth, (user) => {
+    const loginBtn = document.getElementById('btn-google-login');
+    if (user) {
+        appState.isLoggedIn = true;
+        appState.user = user;
 
-    // إزالة التفعيل عن كافة الأزرار واللوحات
+        if (loginBtn) {
+            loginBtn.className = 'btn-primary';
+            loginBtn.innerHTML = `
+                <img src="${user.photoURL}" style="width:22px; height:22px; border-radius:50%; object-fit:cover;">
+                <span>${user.displayName ? user.displayName.split(' ')[0] : 'المستخدم'}</span>
+            `;
+        }
+    } else {
+        appState.isLoggedIn = false;
+        appState.user = null;
+
+        if (loginBtn) {
+            loginBtn.className = 'btn-secondary';
+            loginBtn.innerHTML = `<i class="fa-brands fa-google"></i> تسجيل الدخول بجوجل`;
+        }
+    }
+});
+
+// 7. حماية عمليات التوليد والتحميل بشرط التسجيل والرصيد
+function checkAuthAndExecute(actionCallback) {
+    if (!appState.isLoggedIn) {
+        alert('عفواً! يجب تسجيل الدخول بجوجل أولاً لتتمكن من استخدام الاستوديو.');
+        window.loginWithGoogle();
+        return false;
+    }
+    
+    const requiredCost = appState.currentTab === 'avatar' 
+        ? appState.costs[appState.currentQuality] * 2 
+        : appState.costs[appState.currentQuality];
+
+    if (appState.userCredits < requiredCost) {
+        alert(`رصيدك غير كافٍ. تتطلب هذه العملية ${requiredCost} نقاط، ورصيدك المتبقي ${appState.userCredits} نقاط فقط.`);
+        return false;
+    }
+
+    actionCallback(requiredCost);
+    return true;
+}
+
+// 8. نظام التحكم بالتبويبات وتحديث التكلفة
+function switchTab(tabName) {
+    appState.currentTab = tabName;
+
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
 
-    // تفعيل الزر واللوحة المستهدفة
     const selectedBtn = document.querySelector(`[data-tab="${tabName}"]`);
     const selectedPanel = document.getElementById(`panel-${tabName}`);
 
     if (selectedBtn) selectedBtn.classList.add('active');
     if (selectedPanel) selectedPanel.classList.add('active');
 
-    // تحديث نصوص التكلفة بناءً على التبويب والجودة
     updateActionCost();
 }
 
-// 3. دالة التبديل بين خيارات الجودة (Toggle Quality Selector)
 function setQuality(quality) {
-    studioState.currentQuality = quality;
+    appState.currentQuality = quality;
 
     const btnFhd = document.getElementById('btn-fhd');
     const btn4k = document.getElementById('btn-4k');
 
     if (quality === 'FHD') {
-        btnFhd.classList.add('active');
-        btn4k.classList.remove('active');
+        btnFhd?.classList.add('active');
+        btn4k?.classList.remove('active');
     } else {
-        btn4k.classList.add('active');
-        btnFhd.classList.remove('active');
+        btn4k?.classList.add('active');
+        btnFhd?.classList.remove('active');
     }
 
-    // تحديث التكلفة فورياً على أزرار الإجراءات
     updateActionCost();
 }
 
-// 4. دالة تحديث تكلفة النقاط ديناميكياً على الأزرار
 function updateActionCost() {
-    const cost = studioState.costs[studioState.currentQuality];
+    const cost = appState.costs[appState.currentQuality];
     
-    // تحديث زر توليد الصور
     const generateBtn = document.querySelector('#panel-generate .btn-primary');
     if (generateBtn) {
         generateBtn.innerHTML = `<i class="fa-solid fa-bolt"></i> توليد الصورة الآن (تستهلك ${cost} نقاط)`;
     }
 
-    // تحديث زر الأفاتار الناطق (يزيد بمقدار ضعف النقاط للـ 4K)
     const avatarBtn = document.querySelector('#panel-avatar .btn-primary');
     if (avatarBtn) {
-        const avatarCost = cost * 2;
-        avatarBtn.innerHTML = `<i class="fa-solid fa-microphone"></i> إنشاء الأفاتار الناطق (تستهلك ${avatarCost} نقاط)`;
+        avatarBtn.innerHTML = `<i class="fa-solid fa-microphone"></i> إنشاء الأفاتار الناطق (تستهلك ${cost * 2} نقاط)`;
     }
 }
 
-// 5. تهيئة الأحداث والتفاعل بعد اكتمال تحميل الصفحة (DOM Ready)
+// 9. تهيئة الأحداث المباشرة
 document.addEventListener('DOMContentLoaded', () => {
     
-    // ربط أزرار الـ Tabs بالأحداث بشكل نظيف وإزالة Inline Handlers
     document.querySelectorAll('.tab-btn').forEach(btn => {
-        // استخراج اسم الـ Tab من خاصية data-tab أو الـ onclick القديم
-        const tabName = btn.getAttribute('data-tab') || btn.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        const tabName = btn.getAttribute('data-tab');
         if (tabName) {
-            btn.setAttribute('data-tab', tabName);
-            btn.removeAttribute('onclick'); // تنظيف الـ HTML
             btn.addEventListener('click', () => switchTab(tabName));
         }
     });
 
-    // ربط محدد الجودة (Quality Switcher)
-    const btnFhd = document.getElementById('btn-fhd');
-    const btn4k = document.getElementById('btn-4k');
+    document.getElementById('btn-fhd')?.addEventListener('click', () => setQuality('FHD'));
+    document.getElementById('btn-4k')?.addEventListener('click', () => setQuality('4K'));
 
-    if (btnFhd) {
-        btnFhd.removeAttribute('onclick');
-        btnFhd.addEventListener('click', () => setQuality('FHD'));
-    }
-    if (btn4k) {
-        btn4k.removeAttribute('onclick');
-        btn4k.addEventListener('click', () => setQuality('4K'));
-    }
+    document.querySelectorAll('.studio-panel-content .btn-primary').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            checkAuthAndExecute((costDeducted) => {
+                appState.userCredits -= costDeducted;
+                
+                const creditsBadge = document.getElementById('user-credits');
+                if (creditsBadge) {
+                    creditsBadge.innerText = `${appState.userCredits} نقاط متبقية`;
+                }
 
-    // إضافة إمكانية رفع الملفات التفاعلية داخل الـ Upload Boxes
+                alert(`تم خصم ${costDeducted} نقاط بنجاح! جاري تنفيذ طلبك والتحميل.`);
+            });
+        });
+    });
+
     setupFileUploads();
 });
 
-// 6. تحسين تجربة رفع الملفات (UX File Upload)
 function setupFileUploads() {
     document.querySelectorAll('.upload-box').forEach(box => {
-        // إنشاء input خفي للملفات ديناميكياً
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.accept = 'image/*,video/*';
         fileInput.style.display = 'none';
         box.appendChild(fileInput);
 
-        // فتح نافذة اختيار الملف عند الضغط على مربع الرفع
         box.addEventListener('click', () => fileInput.click());
 
-        // تحديث نص المربع باسم الملف المرفوع
         fileInput.addEventListener('change', (e) => {
             if (e.target.files && e.target.files[0]) {
                 const fileName = e.target.files[0].name;
                 const textParagraph = box.querySelector('p');
                 const icon = box.querySelector('i');
 
-                if (textParagraph) textParagraph.textContent = `تم اختيار: ${fileName}`;
+                if (textParagraph) textParagraph.textContent = `تم رفع: ${fileName}`;
                 if (icon) {
                     icon.className = 'fa-solid fa-circle-check';
                     icon.style.color = 'var(--status-success)';
