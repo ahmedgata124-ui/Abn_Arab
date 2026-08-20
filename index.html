@@ -25,9 +25,11 @@
         <div class="user-profile-area">
             <div class="credits-badge">
                 <i class="fa-solid fa-coins"></i>
-                <span>50 نقطة</span>
+                <span id="user-credits">10 نقاط مجانية</span>
             </div>
-            <a href="#" class="btn-secondary">تسجيل الدخول</a>
+            <button id="btn-google-login" class="btn-secondary" onclick="loginWithGoogle()">
+                <i class="fa-brands fa-google"></i> تسجيل الدخول بجوجل
+            </button>
         </div>
     </nav>
 
@@ -43,16 +45,16 @@
             
             <!-- نظام التبويبات العلوي Tabs -->
             <div class="studio-tabs">
-                <button class="tab-btn active" onclick="switchTab('generate')">
+                <button class="tab-btn active" data-tab="generate">
                     <i class="fa-solid fa-image"></i> توليد الصور
                 </button>
-                <button class="tab-btn" onclick="switchTab('edit')">
+                <button class="tab-btn" data-tab="edit">
                     <i class="fa-solid fa-pen-to-square"></i> تعديل الصور
                 </button>
-                <button class="tab-btn" onclick="switchTab('animate')">
+                <button class="tab-btn" data-tab="animate">
                     <i class="fa-solid fa-film"></i> تحريك الصور
                 </button>
-                <button class="tab-btn" onclick="switchTab('avatar')">
+                <button class="tab-btn" data-tab="avatar">
                     <i class="fa-solid fa-user-gear"></i> الأفاتار الناطق
                 </button>
             </div>
@@ -61,8 +63,8 @@
             <div class="control-row">
                 <label class="control-label">جودة الإخراج:</label>
                 <div class="quality-toggle">
-                    <button class="quality-btn active" id="btn-fhd" onclick="setQuality('FHD')">FHD 1080p</button>
-                    <button class="quality-btn" id="btn-4k" onclick="setQuality('4K')">4K Ultra HD</button>
+                    <button class="quality-btn active" id="btn-fhd">FHD 1080p</button>
+                    <button class="quality-btn" id="btn-4k">4K Ultra HD</button>
                 </div>
             </div>
 
@@ -72,10 +74,10 @@
                 <!-- 1. لوحة توليد الصور -->
                 <div id="panel-generate" class="tab-panel active">
                     <div class="input-group">
-                        <textarea placeholder="صف الصورة التي تتخيلها بدقة... (مثال: فارس عربي في صحراء المستقبل بصوت شفق أزرق)"></textarea>
+                        <textarea placeholder="صف الصورة التي تتخيلها بدقة... (مثال: فارس عربي في صحراء المستقبل بشفق أزرق)"></textarea>
                     </div>
                     <button class="btn-primary btn-block">
-                        <i class="fa-solid fa-bolt"></i> توليد الصورة الآن (تستهلك 2 نقطة)
+                        <i class="fa-solid fa-bolt"></i> توليد الصورة الآن (تستهلك 2 نقاط)
                     </button>
                 </div>
 
@@ -113,7 +115,7 @@
                         <textarea placeholder="أدخل النص المراد نطقه بواسطة الشخصية..."></textarea>
                     </div>
                     <button class="btn-primary btn-block">
-                        <i class="fa-solid fa-microphone"></i> إنشاء الأفاتار الناطق
+                        <i class="fa-solid fa-microphone"></i> إنشاء الأفاتار الناطق (تستهلك 4 نقاط)
                     </button>
                 </div>
 
@@ -159,11 +161,11 @@
         </div>
         <div class="pricing-grid">
             
-            <!-- باقة الهواة -->
+            <!-- باقة المبتدئ -->
             <div class="price-card">
                 <div class="card-header">
-                    <h3>باقة البداية</h3>
-                    <div class="price">$9 <span>/ شهرياً</span></div>
+                    <h3>باقة المبتدئ</h3>
+                    <div class="price">250 ج.م <span>/ شهرياً</span></div>
                 </div>
                 <ul class="features-list">
                     <li><i class="fa-solid fa-check green-icon"></i> 100 نقطة رصيد شهرياً</li>
@@ -179,7 +181,7 @@
                 <div class="badge-popular">الباقة الأكثر طلباً</div>
                 <div class="card-header">
                     <h3>الاشتراك المحترف</h3>
-                    <div class="price">$29 <span>/ شهرياً</span></div>
+                    <div class="price">500 ج.م <span>/ شهرياً</span></div>
                 </div>
                 <ul class="features-list">
                     <li><i class="fa-solid fa-check green-icon"></i> 500 نقطة رصيد شهرياً</li>
@@ -204,28 +206,7 @@
         </div>
     </footer>
 
-    <!-- JS للتحكم التفاعلي بالتبويبات والجودة -->
-    <script>
-        function switchTab(tabName) {
-            // إزالة التفعيل عن جميع الأزرار واللوحات
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
-
-            // تفعيل التبويب واللوحة المحددة
-            event.currentTarget.classList.add('active');
-            document.getElementById('panel-' + tabName).classList.add('active');
-        }
-
-        function setQuality(quality) {
-            document.getElementById('btn-fhd').classList.remove('active');
-            document.getElementById('btn-4k').classList.remove('active');
-            
-            if (quality === 'FHD') {
-                document.getElementById('btn-fhd').classList.add('active');
-            } else {
-                document.getElementById('btn-4k').classList.add('active');
-            }
-        }
-    </script>
+    <!-- استدعاء السكريبت كـ ES6 Module لتشغيل Firebase Auth -->
+    <script type="module" src="script.js"></script>
 </body>
 </html>
