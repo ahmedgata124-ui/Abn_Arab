@@ -1,4 +1,4 @@
-// 1. استيراد مكتبات Firebase Auth الحديثة
+// 1. استيراد مكتبات Firebase Auth
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
     getAuth, 
@@ -7,7 +7,7 @@ import {
     onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-// 2. إعدادات مشروع Firebase الخاص بك
+// 2. إعدادات Firebase الخاصة بمشروعك
 const firebaseConfig = {
   apiKey: "AIzaSyC2Dbppgjk09edIskPX5OM-ujoqKXLJRDA",
   authDomain: "abn-arab-ai.firebaseapp.com",
@@ -18,33 +18,32 @@ const firebaseConfig = {
   measurementId: "G-XYNDV35VB2"
 };
 
-// 3. تهيئة Firebase و Google Provider
+// 3. تهيئة Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// 4. حالة النظام العامة (App State)
+// 4. حالة التطبيق (App State)
 const appState = {
     isLoggedIn: false,
     user: null,
-    userCredits: 10, // 10 نقاط تجربة مجانية
+    userCredits: 10,
     currentTab: 'generate',
     currentQuality: 'FHD',
     costs: { FHD: 2, '4K': 4 }
 };
 
-// 5. دالة تسجيل الدخول بجوجل الحقيقية (Window Global Access)
-window.loginWithGoogle = async function() {
-    window.loginWithGoogle = loginWithGoogle;
+// 5. دالة تسجيل الدخول بجوجل
+async function handleGoogleLogin() {
     try {
         await signInWithPopup(auth, provider);
     } catch (error) {
         console.error("خطأ في تسجيل الدخول عبر Firebase:", error);
-        alert("تعذر فتح نافذة تسجيل الدخول بجوجل، يرجى المحاولة مرة أخرى.");
+        alert("حدث خطأ أثناء فتح نافذة Google: " + error.message);
     }
-};
+}
 
-// 6. الاستماع التلقائي لحالة التسجيل وتحديث الزر
+// 6. الاستماع لحالة تسجيل الدخول لتحديث الواجهة فورياً
 onAuthStateChanged(auth, (user) => {
     const loginBtn = document.getElementById('btn-google-login');
     if (user) {
@@ -69,11 +68,11 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// 7. حماية عمليات التوليد والتحميل بشرط التسجيل والرصيد
+// 7. حماية عمليات التوليد والتحميل
 function checkAuthAndExecute(actionCallback) {
     if (!appState.isLoggedIn) {
         alert('عفواً! يجب تسجيل الدخول بجوجل أولاً لتتمكن من استخدام الاستوديو.');
-        window.loginWithGoogle();
+        handleGoogleLogin();
         return false;
     }
     
@@ -82,7 +81,7 @@ function checkAuthAndExecute(actionCallback) {
         : appState.costs[appState.currentQuality];
 
     if (appState.userCredits < requiredCost) {
-        alert(`رصيدك غير كافٍ. تتطلب هذه العملية ${requiredCost} نقاط، ورصيدك المتبقي ${appState.userCredits} نقاط فقط.`);
+        alert(`رصيدك غير كافٍ. تحتاج إلى ${requiredCost} نقاط ورصيدك الحالي ${appState.userCredits} نقاط فقط.`);
         return false;
     }
 
@@ -90,7 +89,7 @@ function checkAuthAndExecute(actionCallback) {
     return true;
 }
 
-// 8. نظام التحكم بالتبويبات وتحديث التكلفة
+// 8. نظام التبويبات والمحددات
 function switchTab(tabName) {
     appState.currentTab = tabName;
 
@@ -137,20 +136,28 @@ function updateActionCost() {
     }
 }
 
-// 9. تهيئة الأحداث المباشرة
+// 9. تهيئة الأحداث المباشرة عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('btn-google-login')?.addEventListener('click', window.loginWithGoogle);
+    
+    // ربط زر تسجيل الدخول بجوجل المباشر
+    const loginBtn = document.getElementById('btn-google-login');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', handleGoogleLogin);
+    }
+
+    // ربط أزرار التبويبات
     document.querySelectorAll('.tab-btn').forEach(btn => {
-        
         const tabName = btn.getAttribute('data-tab');
         if (tabName) {
             btn.addEventListener('click', () => switchTab(tabName));
         }
     });
 
+    // ربط أزرار الجودة
     document.getElementById('btn-fhd')?.addEventListener('click', () => setQuality('FHD'));
     document.getElementById('btn-4k')?.addEventListener('click', () => setQuality('4K'));
 
+    // ربط أزرار التوليد والتنفيذ
     document.querySelectorAll('.studio-panel-content .btn-primary').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -162,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     creditsBadge.innerText = `${appState.userCredits} نقاط متبقية`;
                 }
 
-                alert(`تم خصم ${costDeducted} نقاط بنجاح! جاري تنفيذ طلبك والتحميل.`);
+                alert(`تم خصم ${costDeducted} نقاط بنجاح! جاري تنفيذ طلبك.`);
             });
         });
     });
