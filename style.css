@@ -2,27 +2,22 @@
    1. COLOR PALETTE & TOKENS (SaaS Modern Dark Mode)
    ========================================================================== */
 :root {
-    /* Backgrounds */
     --bg-main: #0F172A;            /* Slate 900 */
     --bg-card: #1E293B;            /* Slate 800 */
     --bg-border: #334155;          /* Border Color */
     
-    /* Accents */
     --primary-accent: #3B82F6;     /* Tailwind Blue 500 */
     --primary-hover: #2563EB;      /* Tailwind Blue 600 */
     --secondary-accent: #334155;   /* Muted Dark Slate */
     --secondary-hover: #475569;
     
-    /* Typography Colors */
     --text-white: #F8FAFC;         /* Crisp White */
     --text-dim: #94A3B8;           /* Subtitle Slate */
     --text-placeholder: #64748B;   /* Placeholder Slate */
     
-    /* Status Colors */
     --status-success: #22C55E;
     --status-error: #EF4444;
     
-    /* Micro interactions & Radii */
     --radius-card: 12px;
     --radius-btn: 8px;
     --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -189,7 +184,7 @@ textarea:focus {
 }
 
 /* ==========================================================================
-   5. HERO & STUDIO CONTAINER (UX Architecture)
+   5. HERO & STUDIO CONTAINER
    ========================================================================== */
 .hero {
     text-align: center;
@@ -258,7 +253,7 @@ textarea:focus {
     color: #FFFFFF;
 }
 
-/* Toggle Switch Quality Selector */
+/* Quality Selector Switcher */
 .control-row {
     display: flex;
     align-items: center;
@@ -336,7 +331,7 @@ textarea:focus {
 }
 
 /* ==========================================================================
-   6. FEATURES SECTION (3-Column Centered)
+   6. FEATURES SECTION
    ========================================================================== */
 .features-section {
     max-width: 1100px;
@@ -402,7 +397,7 @@ textarea:focus {
 }
 
 /* ==========================================================================
-   7. PRICING CARDS (2-Column Grid & In-card Pill Badge)
+   7. PRICING CARDS
    ========================================================================== */
 .pricing-section {
     max-width: 900px;
@@ -431,7 +426,6 @@ textarea:focus {
     border-color: var(--primary-accent);
 }
 
-/* In-card Pill Badge */
 .badge-popular {
     align-self: center;
     background-color: rgba(59, 130, 246, 0.15);
@@ -483,13 +477,8 @@ textarea:focus {
     gap: 12px;
 }
 
-.green-icon {
-    color: var(--status-success);
-}
-
-.red-icon {
-    color: var(--status-error);
-}
+.green-icon { color: var(--status-success); }
+.red-icon { color: var(--status-error); }
 
 /* ==========================================================================
    8. FOOTER
