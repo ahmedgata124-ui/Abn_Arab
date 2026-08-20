@@ -35,6 +35,7 @@ const appState = {
 
 // 5. دالة تسجيل الدخول بجوجل الحقيقية (Window Global Access)
 window.loginWithGoogle = async function() {
+    window.loginWithGoogle = loginWithGoogle;
     try {
         await signInWithPopup(auth, provider);
     } catch (error) {
@@ -138,8 +139,9 @@ function updateActionCost() {
 
 // 9. تهيئة الأحداث المباشرة
 document.addEventListener('DOMContentLoaded', () => {
-    
+    document.getElementById('btn-google-login')?.addEventListener('click', window.loginWithGoogle);
     document.querySelectorAll('.tab-btn').forEach(btn => {
+        
         const tabName = btn.getAttribute('data-tab');
         if (tabName) {
             btn.addEventListener('click', () => switchTab(tabName));
