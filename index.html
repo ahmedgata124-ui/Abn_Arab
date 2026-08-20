@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Studio Platform | منصة الذكاء الاصطناعي الفائقة</title>
+    <title>ابن العرب AI | المنصة العربية الذكية للتوليد والإنشاء</title>
     
-    <!-- Google Fonts: Tajawal, Cairo, & Inter -->
+    <!-- Google Fonts: Cairo, Tajawal, Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <style>
-        /* سيتم إضافة كود الـ CSS المطور بالكامل هنا فور تأكيدك بـ "تم" */
-    </style>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Header / Nav -->
+    <!-- Header / Navigation Bar -->
     <nav>
         <div class="logo">
             <i class="fa-solid fa-wand-magic-sparkles logo-icon"></i>
-            <span>AI Studio</span>
+            <span>ابن العرب AI</span>
         </div>
 
         <ul class="nav-links">
@@ -32,20 +31,22 @@
             <li><a href="#pricing"><i class="fa-solid fa-gem"></i> الباقات</a></li>
         </ul>
 
-        <div class="user-profile-area" style="display: flex; align-items: center; gap: 15px;">
-            <div class="credits-badge" id="token-counter">
-                <i class="fa-solid fa-coins"></i> <span>15</span> Token
+        <div class="user-profile-area">
+            <div class="credits-badge">
+                <i class="fa-solid fa-bolt"></i> الرصيد: <span id="credits-count">0</span> نقطة
             </div>
-            <a href="#login" class="btn-auth"><i class="fa-solid fa-user"></i> تسجيل الدخول</a>
+            <button id="auth-btn" class="btn-auth">
+                <i class="fa-brands fa-google"></i> تسجيل الدخول بجوجل
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>ابتكر مستقبلك الرقمي مع <span>الذكاء الاصطناعي التوليدي</span></h1>
-        <p>توليد صور عالية الدقة، تعديل الصور الاحترافي، تحريك المشاهد لملفات فيديو، وصنع الأفاتار الذكي بنقرة واحدة.</p>
+        <h1>ابتكر مستقبلك الرقمي مع <span>ابن العرب AI</span></h1>
+        <p>منصة صناعة الوسائط بالذكاء الاصطناعي: توليد صور بدقة تصل إلى 4K Ultra HD، تحريك المشاهد، وصنع الأفاتار الذكي بنقرة واحدة.</p>
         <div class="hero-btns">
-            <a href="#studio" class="btn-discover"><i class="fa-solid fa-rocket"></i> جرب الاستوديو الان</a>
+            <a href="#studio" class="btn-discover"><i class="fa-solid fa-rocket"></i> جرب الاستوديو الآن</a>
             <a href="https://wa.me/" class="btn-whatsapp" target="_blank"><i class="fa-brands fa-whatsapp"></i> الدعم الفني المباشر</a>
         </div>
     </section>
@@ -55,25 +56,25 @@
         <div class="studio-box">
             
             <div class="studio-header">
-                <h2><i class="fa-solid fa-microchip"></i> استوديو الذكاء الاصطناعي</h2>
+                <h2><i class="fa-solid fa-microchip"></i> استوديو ابن العرب AI</h2>
                 <div class="credits-badge">
-                    <i class="fa-solid fa-bolt"></i> الرصيد المتاح: <span>15</span> نقطة
+                    <i class="fa-solid fa-coins"></i> المتاح: <span id="credits-count-panel">0</span> نقطة
                 </div>
             </div>
 
-            <!-- Studio Navigation Tabs / Sidebar Buttons -->
+            <!-- Navigation Tabs -->
             <div class="studio-tabs">
                 <button class="tab-btn active" data-tab="generate">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> توليد الصور
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> توليد الصور (2 نقطة)
                 </button>
                 <button class="tab-btn" data-tab="edit">
                     <i class="fa-solid fa-pen-to-square"></i> تعديل الصور
                 </button>
-                <button class="tab-btn" data-tab="animate">
+                <button class="tab-btn" data-tab="video">
                     <i class="fa-solid fa-clapperboard"></i> تحريك الصور
                 </button>
                 <button class="tab-btn" data-tab="avatar">
-                    <i class="fa-solid fa-user-astronaut"></i> الأفاتار الذكي
+                    <i class="fa-solid fa-user-astronaut"></i> الأفاتار الناطق
                 </button>
             </div>
 
@@ -81,73 +82,63 @@
             <div class="studio-panel active" id="panel-generate">
                 <div class="prompt-input-wrapper">
                     <i class="fa-solid fa-terminal prompt-icon"></i>
-                    <textarea placeholder="صف ما تريد توليده بدقة (مثال: محارب سايبربانك مستقبلي في مدينة خيالية، أضواء نيون، 8K)..."></textarea>
+                    <textarea id="gen-prompt" placeholder="صف ما تريد رسمه بدقة (مثال: فارس عربي بحصان أصيل في الصحراء، إضاءة سينمائية، 4K)..."></textarea>
                 </div>
 
-                <!-- Aspect Ratio Selector -->
+                <!-- Quality & Aspect Ratio Selector -->
                 <div class="aspect-ratio-wrapper">
-                    <label><i class="fa-solid fa-crop-simple"></i> أبعاد الصورة (Aspect Ratio):</label>
+                    <label><i class="fa-solid fa-sliders"></i> خيارات جودة ودقة الصورة:</label>
                     <div class="aspect-options">
-                        <button class="aspect-btn active" data-ratio="1:1"><i class="fa-regular fa-square"></i> 1:1 مربع</button>
-                        <button class="aspect-btn" data-ratio="16:9"><i class="fa-solid fa-tv"></i> 16:9 عريض</button>
-                        <button class="aspect-btn" data-ratio="9:16"><i class="fa-solid fa-mobile-screen-button"></i> 9:16 طولي</button>
+                        <button class="aspect-btn active" data-quality="1080p"><i class="fa-solid fa-tv"></i> دقة FHD 1080p</button>
+                        <button class="aspect-btn" data-quality="4k"><i class="fa-solid fa-gem"></i> دقة فائقة 4K Ultra HD</button>
                     </div>
                 </div>
 
-                <button class="btn-action">
-                    <i class="fa-solid fa-sparkles"></i> توليد الصورة الآن
+                <button id="btn-gen-image" class="btn-action">
+                    <i class="fa-solid fa-sparkles"></i> توليد الصورة الآن (تستهلك 2 نقطة)
                 </button>
             </div>
 
-            <!-- Tab 2: Image Editing / Inpainting -->
+            <!-- Tab 2: Image Editing -->
             <div class="studio-panel" id="panel-edit">
-                <button class="btn-action btn-upload">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> رفع صورة للتعديل
+                <input type="file" id="file-input" accept="image/*" style="display: none;">
+                <button class="btn-action btn-upload" onclick="document.getElementById('file-input').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> رفع صورة من جهازك
                 </button>
-                <textarea placeholder="أدخل تعليمات التعديل (Inpainting / Editing)..."></textarea>
-                <button class="btn-action">
-                    <i class="fa-solid fa-sliders"></i> تطبيق التعديل
+                <div class="prompt-input-wrapper">
+                    <textarea id="edit-prompt" placeholder="أدخل تعليمات التعديل المطلوبة على الصورة المرفوعة..."></textarea>
+                </div>
+                <button id="btn-edit-image" class="btn-action">
+                    <i class="fa-solid fa-sliders"></i> تطبيق التعديل الذكي
                 </button>
             </div>
 
             <!-- Tab 3: Image-to-Video Animation -->
-            <div class="studio-panel" id="panel-animate">
-                <button class="btn-action btn-upload">
-                    <i class="fa-solid fa-file-video"></i> رفع صورة لتحريكها
-                </button>
-                <input type="text" placeholder="حركة الكاميرا أو المؤثرات المطلوب إضافتها...">
-                <button class="btn-action">
-                    <i class="fa-solid fa-play"></i> بدء التحريك (Image-to-Video)
-                </button>
-            </div>
-
-            <!-- Tab 4: InstantID Avatar -->
-            <div class="studio-panel" id="panel-avatar">
-                <button class="btn-action btn-upload">
-                    <i class="fa-solid fa-id-card"></i> رفع صورة الوجه (InstantID)
-                </button>
-                <textarea placeholder="صف النمط أو الشخصية التي تريد تحويل الوجه إليها..."></textarea>
-                <button class="btn-action">
-                    <i class="fa-solid fa-user-gear"></i> إنشاء الأفاتار
-                </button>
-            </div>
-
-            <!-- Preview / Gallery / Output Showcase Area -->
-            <div class="preview-area" id="preview-container">
-                <!-- Skeleton Pulse Loading State (Hidden by default or shown on generation) -->
-                <div class="skeleton-loader" style="display: none;">
-                    <div class="spinner"></div>
-                    <p class="loading-text">جاري رسم تفاصيل خيالك الآن...</p>
+            <div class="studio-panel" id="panel-video">
+                <div class="prompt-input-wrapper">
+                    <textarea id="video-prompt" placeholder="صف الحركة أو التأثيرات المرئية المطلوبة لتحريك المشهد..."></textarea>
                 </div>
+                <button id="btn-gen-video" class="btn-action">
+                    <i class="fa-solid fa-play"></i> بدء إنشاء الحركة (Video Motion)
+                </button>
+            </div>
 
-                <!-- Empty State Placeholder -->
+            <!-- Tab 4: Avatar Speech -->
+            <div class="studio-panel" id="panel-avatar">
+                <div class="prompt-input-wrapper">
+                    <textarea id="avatar-script" placeholder="اكتب النص العربي الذي سينطقه الأفاتار بصوته الذكي..."></textarea>
+                </div>
+                <button id="btn-gen-avatar" class="btn-action">
+                    <i class="fa-solid fa-user-gear"></i> إنشاء الأفاتار الناطق
+                </button>
+            </div>
+
+            <!-- Preview / Result Output Area -->
+            <div class="preview-area" id="preview-area">
                 <div class="empty-state">
                     <i class="fa-regular fa-image empty-icon"></i>
-                    <p>النتيجة ستظهر هنا فور الانتهاء من المعالجة</p>
+                    <p>النتيجة المعالجة ستظهر هنا فور اكتمال التوليد</p>
                 </div>
-
-                <!-- Generated Image Output -->
-                <!-- <img src="result.jpg" alt="AI Generated Result"> -->
             </div>
 
         </div>
@@ -155,65 +146,73 @@
 
     <!-- Features Section -->
     <section class="section-title" id="features">
-        <h2>لماذا تختار منصتنا؟</h2>
+        <h2>لماذا تختار منصة ابن العرب AI؟</h2>
     </section>
 
     <div class="features-grid">
         <div class="feature-card">
             <i class="fa-solid fa-bolt-lightning"></i>
-            <h3>سرعة فائقة</h3>
-            <p>توليد ومعالجة الصور والفيديوهات خلال ثوانٍ معدودة بفضل خوادم فائقة السرعة.</p>
+            <h3>سرعة وتجاوب عالي</h3>
+            <p>معالجة سريعة لجميع الوسائط باستخدام أحدث محركات الذكاء الاصطناعي التوليدي.</p>
         </div>
         <div class="feature-card">
-            <i class="fa-solid fa-wand-magic"></i>
-            <h3>دقة سينمائية</h3>
-            <p>نماذج ذكاء اصطناعي متطورة تنتج تفاصيل واقعية بنقاء يصل إلى 8K.</p>
+            <i class="fa-solid fa-gem"></i>
+            <h3>دقة تصل إلى 4K</h3>
+            <p>إنشاء صور عالية الوضوح وتفاصيل فائقة النقاء تناسب التصاميم الاحترافية.</p>
         </div>
         <div class="feature-card">
-            <i class="fa-solid fa-sliders"></i>
-            <h3>تحكم كامل</h3>
-            <p>أدوات احترافية للتحكم في الأبعاد، التعديل الجزئي، وتحريك المشاهد بحرية.</p>
+            <i class="fa-solid fa-microphone-lines"></i>
+            <h3>أفاتار ناطق تفاعلي</h3>
+            <p>تحويل النصوص العربية إلى صوت بشري متزامن مع الشخصيات الرقمية بسهولة.</p>
         </div>
     </div>
 
     <!-- Pricing Section -->
     <section class="section-title" id="pricing">
-        <h2>باقات الاشتراك والإنشاء</h2>
+        <h2>باقات الاشتراك ورصيد النقاط</h2>
     </section>
 
     <div class="pricing-grid">
+        <!-- Starter Plan -->
         <div class="price-card">
-            <h3>الباقة التجريبية</h3>
-            <div class="price">مجاناً</div>
+            <h3>اشتراك المبتدئ</h3>
+            <div class="price">250 ج.م <span>/ شهرياً</span></div>
             <ul>
-                <li><i class="fa-solid fa-check green-icon"></i> 15 نقطة توليد</li>
-                <li><i class="fa-solid fa-check green-icon"></i> دقة متوسطة</li>
-                <li><i class="fa-solid fa-xmark" style="color: #ef4444;"></i> تحريك الفيديوهات</li>
+                <li><i class="fa-solid fa-check green-icon"></i> 200 نقطة رصيد</li>
+                <li><i class="fa-solid fa-check green-icon"></i> دقة صور تصل إلى 1080p</li>
+                <li><i class="fa-solid fa-check green-icon"></i> تحريك الصور إلى فيديو</li>
+                <li><i class="fa-solid fa-xmark" style="color: #ef4444;"></i> صنع الأفاتار الناطق</li>
+                <li><i class="fa-solid fa-xmark" style="color: #ef4444;"></i> أولوية معالجة قصوى</li>
             </ul>
-            <a href="#" class="btn-auth btn-block">ابدأ مجاناً</a>
+            <a href="https://wa.me/" class="btn-auth btn-block" target="_blank">اشترك الآن</a>
         </div>
 
+        <!-- Professional Plan -->
         <div class="price-card popular">
-            <h3>الباقة الاحترافية</h3>
-            <div class="price">$19 <span>/ شهرياً</span></div>
+            <h3>اشتراك المحترف</h3>
+            <div class="price">500 ج.م <span>/ شهرياً</span></div>
             <ul>
-                <li><i class="fa-solid fa-check green-icon"></i> 500 نقطة شهرياً</li>
-                <li><i class="fa-solid fa-check green-icon"></i> دقة Ultra HD / 8K</li>
-                <li><i class="fa-solid fa-check green-icon"></i> تحريك الصور وصنع الأفاتار</li>
-                <li><i class="fa-solid fa-check green-icon"></i> أولوية في المعالجة</li>
+                <li><i class="fa-solid fa-check green-icon"></i> 550 نقطة رصيد</li>
+                <li><i class="fa-solid fa-check green-icon"></i> دقة فائقة 4K Ultra HD</li>
+                <li><i class="fa-solid fa-check green-icon"></i> تحريك الصور والمشاهد</li>
+                <li><i class="fa-solid fa-check green-icon"></i> صنع الأفاتار الذكي الناطق</li>
+                <li><i class="fa-solid fa-check green-icon"></i> أولوية قصوى في المعالجة</li>
+                <li><i class="fa-solid fa-check green-icon"></i> تحويل الصوت لكلام والعكس</li>
             </ul>
-            <a href="#" class="btn-action btn-block">اشترك الآن</a>
+            <a href="https://wa.me/" class="btn-action btn-block" target="_blank">اشترك الآن</a>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
         <div class="support-info">
-            <a href="https://wa.me/" target="_blank"><i class="fa-brands fa-whatsapp green-icon"></i> الدعم عبر واتساب</a>
-            <a href="mailto:support@aistudio.com"><i class="fa-solid fa-envelope blue-icon"></i> support@aistudio.com</a>
+            <a href="https://wa.me/" target="_blank"><i class="fa-brands fa-whatsapp green-icon"></i> الدعم الفني عبر واتساب</a>
+            <a href="mailto:support@abnarab.ai"><i class="fa-solid fa-envelope blue-icon"></i> support@abnarab.ai</a>
         </div>
-        <p>&copy; 2026 AI Studio Platform. جميع الحقوق محفوظة.</p>
+        <p>&copy; 2026 ابن العرب AI. جميع الحقوق محفوظة.</p>
     </footer>
 
+    <!-- Main JavaScript Logic -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
