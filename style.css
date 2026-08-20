@@ -1,29 +1,35 @@
 /* ==========================================================================
-   1. COLOR SYSTEM & DESIGN VARIABLES
+   1. COLOR SYSTEM & DESIGN VARIABLES (Refined & Modern)
    ========================================================================== */
 :root {
-    --bg-main: #070a13;
-    --bg-secondary: #0b0f19;
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --card-bg-hover: rgba(255, 255, 255, 0.06);
+    /* خلفيات داكنة نظيفة وموحدة بدلاً من الشفق والوهج المتعدد */
+    --bg-main: #0B0F17;
+    --bg-secondary: #111827;
+    --card-bg: rgba(255, 255, 255, 0.025);
+    --card-bg-hover: rgba(255, 255, 255, 0.045);
     
-    --primary-purple: #8b5cf6;
-    --primary-cyan: #06b6d4;
-    --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
-    --accent-gradient-hover: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
+    /* ألوان صريحة (Solid Accent Colors) مستقرة وبدون تدرجات صارخة */
+    --accent-blue: #2563EB;
+    --accent-blue-hover: #1D4ED8;
+    --accent-cyan: #0EA5E9;
     
-    --text-white: #f8fafc;
-    --text-dim: #94a3b8;
-    --text-muted: #64748b;
-    --accent-green: #10b981;
+    /* رفع درجات التباين للنصوص لراحة العين والتصفح */
+    --text-white: #F9FAFB;
+    --text-dim: #D1D5DB;        /* تم رفع درجة السطوع لتباين أفضل */
+    --text-muted: #9CA3AF;      /* تم رفع التباين لتسهيل القراءة */
+    
+    /* ألوان حالات الباقات والأيقونات */
+    --status-success: #10B981;
+    --status-error: #EF4444;
+    
     --border-glass: rgba(255, 255, 255, 0.08);
-    --border-glass-bright: rgba(139, 92, 246, 0.3);
+    --border-bright: rgba(37, 99, 235, 0.4);
     
-    --neon-glow: 0 0 25px rgba(139, 92, 246, 0.35);
-    --neon-glow-strong: 0 0 35px rgba(6, 182, 212, 0.5);
-    --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    /* حدود ناعمة وأنيقة بدلاً من الـ Glow العريض */
+    --subtle-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --subtle-border-glow: 0 0 15px rgba(37, 99, 235, 0.15);
     
-    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==========================================================================
@@ -33,7 +39,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+    font-family: 'Cairo', 'Tajawal', sans-serif;
     scroll-behavior: smooth;
 }
 
@@ -43,11 +49,6 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.6;
-    background-image: 
-        radial-gradient(circle at 15% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 45%),
-        radial-gradient(circle at 85% 60%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
-    background-attachment: fixed;
 }
 
 ::-webkit-scrollbar {
@@ -57,23 +58,23 @@ body {
     background: var(--bg-main);
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(139, 92, 246, 0.3);
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-purple);
+    background: rgba(255, 255, 255, 0.25);
 }
 
 /* ==========================================================================
-   3. HEADER / NAVIGATION BAR
+   3. HEADER / NAVIGATION BAR (Paddings & Spacing Refined)
    ========================================================================== */
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 6%;
-    background: rgba(7, 10, 19, 0.85);
-    backdrop-filter: blur(16px);
+    padding: 18px 7%; /* ضبط الهوامش لإعطاء مساحة تنفس مريحة */
+    background: rgba(11, 15, 23, 0.9);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-glass);
     position: sticky;
     top: 0;
@@ -81,62 +82,56 @@ nav {
 }
 
 .logo {
-    font-size: 1.7rem;
-    font-weight: 900;
+    font-size: 1.4rem;
+    font-weight: 800; /* وزن متوازن للعنوان */
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    color: var(--text-white);
 }
 
 .logo-icon {
-    color: var(--primary-cyan);
-    font-size: 1.8rem;
-    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.6));
-}
-
-.logo span {
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent-cyan);
+    font-size: 1.5rem;
 }
 
 .nav-links {
     display: flex;
-    gap: 32px;
+    gap: 28px;
     list-style: none;
 }
 
 .nav-links a {
     color: var(--text-dim);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500; /* استبدال الـ Bold بالوزن المتوسط */
     font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 8px;
     transition: var(--transition-smooth);
-    padding: 6px 12px;
+    padding: 8px 14px;
     border-radius: 8px;
 }
 
 .nav-links a:hover {
     color: var(--text-white);
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .user-profile-area {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 16px;
 }
 
 .credits-badge {
-    background: rgba(139, 92, 246, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-glass);
     padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 0.9rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.88rem;
     color: var(--text-white);
     display: flex;
     align-items: center;
@@ -144,29 +139,28 @@ nav {
 }
 
 .credits-badge i {
-    color: #f59e0b;
+    color: #F59E0B;
 }
 
+/* زر تسجيل الدخول بلون صريح ومسافات متوازنة */
 .btn-auth {
-    background: var(--accent-gradient);
-    color: #fff;
+    background-color: var(--accent-blue);
+    color: #FFFFFF;
     border: none;
-    padding: 10px 24px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 0.95rem;
+    padding: 10px 22px; /* تعديل الهوامش لتصبح أكثر احترافية */
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.92rem;
     cursor: pointer;
     transition: var(--transition-smooth);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    box-shadow: var(--neon-glow);
 }
 
 .btn-auth:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--neon-glow-strong);
+    background-color: var(--accent-blue-hover);
 }
 
 /* ==========================================================================
@@ -174,124 +168,135 @@ nav {
    ========================================================================== */
 .hero {
     text-align: center;
-    padding: 90px 20px 60px;
-    max-width: 950px;
+    padding: 80px 20px 50px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
 .hero h1 {
-    font-size: 3.2rem;
-    font-weight: 900;
-    line-height: 1.25;
-    margin-bottom: 24px;
+    font-size: 2.8rem;
+    font-weight: 800; /* Bold رزين للعناوين الرئيسية */
+    line-height: 1.3;
+    margin-bottom: 20px;
+    color: var(--text-white);
 }
 
 .hero h1 span {
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent-cyan); /* لون صريح عالي التباين بدلاً من الـ Gradient */
 }
 
 .hero p {
     color: var(--text-dim);
-    font-size: 1.2rem;
-    margin-bottom: 36px;
+    font-weight: 400; /* Regular لتسهيل قراءة النص العادي */
+    font-size: 1.15rem;
+    margin-bottom: 32px;
 }
 
 .hero-btns {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 16px;
     flex-wrap: wrap;
 }
 
 .btn-discover {
-    background: var(--accent-gradient);
-    color: #fff;
-    padding: 14px 36px;
-    border-radius: 14px;
-    font-weight: 800;
-    font-size: 1.05rem;
+    background-color: var(--accent-blue);
+    color: #FFFFFF;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 10px;
     transition: var(--transition-smooth);
-    box-shadow: var(--neon-glow);
+}
+
+.btn-discover:hover {
+    background-color: var(--accent-blue-hover);
 }
 
 .btn-whatsapp {
-    background: rgba(16, 185, 129, 0.12);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    color: #34d399;
-    padding: 14px 32px;
-    border-radius: 14px;
-    font-weight: 700;
-    font-size: 1.05rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-glass);
+    color: var(--text-white);
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 10px;
     transition: var(--transition-smooth);
+}
+
+.btn-whatsapp:hover {
+    background: rgba(255, 255, 255, 0.08);
 }
 
 /* ==========================================================================
    5. WORKSPACE & STUDIO CONTAINER
    ========================================================================== */
 .studio-container {
-    max-width: 1100px;
-    margin: 40px auto 80px;
+    max-width: 1050px;
+    margin: 30px auto 60px;
     padding: 0 20px;
 }
 
 .studio-box {
-    background: var(--card-bg);
-    backdrop-filter: blur(20px);
+    background: var(--bg-secondary);
     border: 1px solid var(--border-glass);
-    border-radius: 28px;
-    padding: 36px;
-    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: var(--subtle-shadow);
 }
 
 .studio-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 28px;
-    padding-bottom: 18px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
     border-bottom: 1px solid var(--border-glass);
+}
+
+.studio-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
 }
 
 .studio-tabs {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    margin-bottom: 30px;
-    background: rgba(0, 0, 0, 0.25);
-    padding: 8px;
-    border-radius: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px;
+    border-radius: 12px;
 }
 
 .tab-btn {
     background: transparent;
     border: none;
-    color: var(--text-dim);
-    padding: 14px 20px;
-    font-weight: 700;
-    font-size: 0.95rem;
+    color: var(--text-muted);
+    padding: 12px 16px;
+    font-weight: 500;
+    font-size: 0.92rem;
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 8px;
     transition: var(--transition-smooth);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .tab-btn.active {
-    background: var(--accent-gradient);
-    color: #fff;
-    box-shadow: var(--neon-glow);
+    background: var(--accent-blue);
+    color: #FFFFFF;
+    font-weight: 600;
 }
 
 .studio-panel {
@@ -309,98 +314,123 @@ nav {
 
 .prompt-icon {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    color: var(--primary-cyan);
+    top: 18px;
+    right: 18px;
+    color: var(--text-muted);
 }
 
 textarea {
     width: 100%;
-    background: rgba(7, 10, 19, 0.7);
+    background: var(--bg-main);
     border: 1px solid var(--border-glass);
     color: var(--text-white);
-    padding: 18px 50px 18px 20px;
-    border-radius: 16px;
+    padding: 16px 48px 16px 16px;
+    border-radius: 12px;
     outline: none;
-    font-size: 1rem;
-    min-height: 120px;
+    font-size: 0.98rem;
+    font-weight: 400;
+    min-height: 110px;
+    transition: var(--transition-smooth);
+}
+
+textarea:focus {
+    border-color: var(--accent-blue);
 }
 
 .aspect-ratio-wrapper {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+}
+
+.aspect-ratio-wrapper label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .aspect-options {
     display: flex;
-    gap: 14px;
+    gap: 12px;
 }
 
 .aspect-btn {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-main);
     border: 1px solid var(--border-glass);
     color: var(--text-dim);
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.88rem;
     cursor: pointer;
     transition: var(--transition-smooth);
 }
 
 .aspect-btn.active {
-    border-color: var(--primary-cyan);
-    background: rgba(6, 182, 212, 0.15);
-    color: var(--primary-cyan);
+    border-color: var(--accent-blue);
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--text-white);
 }
 
 .btn-action {
-    background: var(--accent-gradient);
-    color: #fff;
+    background-color: var(--accent-blue);
+    color: #FFFFFF;
     border: none;
     width: 100%;
-    padding: 16px;
-    border-radius: 16px;
-    font-size: 1.1rem;
-    font-weight: 800;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
     transition: var(--transition-smooth);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    box-shadow: var(--neon-glow);
+    gap: 10px;
+}
+
+.btn-action:hover {
+    background-color: var(--accent-blue-hover);
 }
 
 .btn-upload {
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px dashed var(--border-glass-bright);
+    background: transparent;
+    border: 1px dashed var(--border-glass);
+    color: var(--text-dim);
     margin-bottom: 20px;
-    box-shadow: none;
+}
+
+.btn-upload:hover {
+    border-color: var(--accent-blue);
+    color: var(--text-white);
 }
 
 /* ==========================================================================
    6. PREVIEW AREA & OUTPUT
    ========================================================================== */
 .preview-area {
-    margin-top: 32px;
-    min-height: 280px;
+    margin-top: 28px;
+    min-height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.3);
-    border: 2px dashed var(--border-glass);
-    border-radius: 20px;
-    padding: 30px;
+    background: var(--bg-main);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 24px;
 }
 
 .empty-state {
     color: var(--text-muted);
     text-align: center;
+    font-weight: 400;
 }
 
 .empty-icon {
-    font-size: 3.5rem;
-    margin-bottom: 14px;
-    color: var(--border-glass-bright);
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    color: var(--text-muted);
+    opacity: 0.6;
 }
 
 .pulse-avatar {
@@ -409,103 +439,146 @@ textarea {
 
 @keyframes pulse {
     0% { transform: scale(1); }
-    100% { transform: scale(1.08); }
+    100% { transform: scale(1.04); }
 }
 
 /* ==========================================================================
-   7. FEATURES & PRICING SECTIONS
+   7. FEATURES & PRICING SECTIONS (Card Glow & Contrast Refined)
    ========================================================================== */
 .section-title {
     text-align: center;
-    font-size: 2.3rem;
-    font-weight: 900;
-    margin: 100px 0 50px;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 80px 0 40px;
 }
 
 .section-title h2 {
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-white);
 }
 
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 28px;
-    max-width: 1100px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1050px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
 .feature-card {
-    background: var(--card-bg);
+    background: var(--bg-secondary);
     border: 1px solid var(--border-glass);
-    padding: 36px 28px;
-    border-radius: 24px;
+    padding: 30px 24px;
+    border-radius: 18px;
+    transition: var(--transition-smooth);
 }
 
 .feature-card i {
-    font-size: 2.4rem;
-    color: var(--primary-cyan);
-    margin-bottom: 20px;
+    font-size: 2rem;
+    color: var(--accent-cyan);
+    margin-bottom: 16px;
+}
+
+.feature-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-size: 0.95rem;
 }
 
 .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-    gap: 32px;
-    max-width: 1000px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 950px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
 .price-card {
-    background: var(--card-bg);
+    background: var(--bg-secondary);
     border: 1px solid var(--border-glass);
-    border-radius: 28px;
-    padding: 40px 30px;
+    border-radius: 20px;
+    padding: 36px 28px;
     text-align: center;
     position: relative;
+    transition: var(--transition-smooth);
 }
 
+/* تقليل التوهج (Glow Effect) العريض واستبداله بإطار ناعم وأنيق */
 .price-card.popular {
-    border-color: var(--primary-purple);
-    box-shadow: var(--neon-glow);
-    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid var(--border-bright);
+    box-shadow: var(--subtle-border-glow);
+    background: rgba(17, 24, 39, 0.95);
 }
 
 .price-card.popular::before {
     content: 'الباقة الأكثر طلباً';
     position: absolute;
-    top: -16px;
+    top: -13px;
     right: 50%;
     transform: translateX(50%);
-    background: var(--accent-gradient);
-    color: #fff;
-    padding: 4px 18px;
-    border-radius: 20px;
-    font-weight: 800;
-    font-size: 0.85rem;
+    background: var(--accent-blue);
+    color: #FFFFFF;
+    padding: 4px 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.78rem;
+}
+
+.price-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
 }
 
 .price-card .price {
-    font-size: 2.8rem;
-    font-weight: 900;
-    margin: 20px 0;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin: 16px 0;
+    color: var(--text-white);
+}
+
+.price-card .price span {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--text-muted);
 }
 
 .price-card ul {
     list-style: none;
-    margin: 30px 0;
+    margin: 28px 0;
     text-align: right;
 }
 
 .price-card ul li {
     margin-bottom: 14px;
-    color: var(--text-dim);
+    color: var(--text-dim); /* رفع التباين لتسهيل قراءة مميزات الباقة */
+    font-weight: 400;
+    font-size: 0.95rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+}
+
+/* تعديل ألوان وأحجام علامات الصح والخطأ لتكون أوضح وأكثر تناسقاً */
+.price-card ul li i {
+    font-size: 1.05rem;
+    width: 20px;
+    text-align: center;
+}
+
+.green-icon { 
+    color: var(--status-success) !important; 
+}
+
+.price-card ul li i.fa-xmark {
+    color: var(--status-error) !important;
+    opacity: 0.8;
 }
 
 .btn-block {
@@ -519,32 +592,38 @@ textarea {
    8. FOOTER & RESPONSIVENESS
    ========================================================================== */
 footer {
-    margin-top: 120px;
+    margin-top: 100px;
     border-top: 1px solid var(--border-glass);
-    padding: 50px 8%;
+    padding: 40px 7%;
     text-align: center;
-    color: var(--text-dim);
-    background: rgba(7, 10, 19, 0.95);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    background: var(--bg-main);
 }
 
 .support-info {
     display: flex;
     justify-content: center;
-    gap: 36px;
-    margin-bottom: 24px;
+    gap: 32px;
+    margin-bottom: 20px;
 }
 
 .support-info a {
-    color: var(--text-white);
+    color: var(--text-dim);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
+    transition: var(--transition-smooth);
 }
 
-.green-icon { color: #34d399; }
-.blue-icon { color: var(--primary-cyan); }
+.support-info a:hover {
+    color: var(--text-white);
+}
+
+.blue-icon { color: var(--accent-cyan); }
 
 @media (max-width: 768px) {
-    nav { flex-direction: column; gap: 16px; }
-    .hero h1 { font-size: 2.1rem; }
-    .studio-box { padding: 24px 18px; }
+    nav { flex-direction: column; gap: 14px; padding: 16px; }
+    .hero h1 { font-size: 2rem; }
+    .studio-box { padding: 20px 16px; }
+    .nav-links { gap: 16px; }
 }
