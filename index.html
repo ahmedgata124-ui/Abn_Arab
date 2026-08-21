@@ -11,6 +11,13 @@
 </head>
 <body>
 
+    <!-- ================= Background & Intro Overlay ================= -->
+    <div id="blackhole-overlay">
+        <canvas id="bg-canvas"></canvas>
+        <div id="white-core"></div>
+    </div>
+    <div id="white-flash"></div>
+
     <!-- القائمة العلوية Navbar -->
     <nav>
         <div class="logo">
@@ -27,7 +34,6 @@
                 <i class="fa-solid fa-coins"></i>
                 <span id="user-credits">10 نقاط مجانية</span>
             </div>
-            <!-- زر جوجل بدون onclick للعمل مع ES6 Modules -->
             <button id="btn-google-login" class="btn-secondary">
                 <i class="fa-brands fa-google"></i> تسجيل الدخول بجوجل
             </button>
@@ -69,7 +75,7 @@
                 </div>
             </div>
 
-            <!-- لوحة المدخلات المتغيرة بناءً على التبويب النشط -->
+            <!-- لوحة المدخلات المتغيرة -->
             <div class="studio-panel-content">
                 
                 <!-- 1. لوحة توليد الصور -->
@@ -207,7 +213,7 @@
         </div>
     </footer>
 
-    <!-- تم تعديل مسار الاستدعاء إلى ./script.js -->
+    <!-- استدعاء ملف الجافاسكريبت المحدث -->
     <script type="module" src="./script.js"></script>
 </body>
 </html>
