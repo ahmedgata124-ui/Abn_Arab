@@ -13,7 +13,6 @@
     
     --text-white: #F8FAFC;
     --text-dim: #94A3B8;
-    --text-placeholder: #64748B;
     
     --status-success: #22C55E;
     --status-error: #EF4444;
@@ -377,7 +376,7 @@ footer {
 .support-info a { color: var(--text-dim); text-decoration: none; }
 
 /* ==========================================================================
-   7. ULTRA CINEMATIC FULLSCREEN BLACKHOLE OVERLAY
+   7. FULLSCREEN BLACK HOLE OVERLAY & GROWING WHITE CIRCLE
    ========================================================================== */
 #blackhole-overlay {
     position: fixed;
@@ -390,7 +389,7 @@ footer {
     cursor: pointer;
     overflow: hidden;
     touch-action: none;
-    transition: opacity 1s ease-out, visibility 1s ease-out;
+    transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
 }
 
 #bg-canvas {
@@ -402,6 +401,7 @@ footer {
     display: block;
 }
 
+/* الدائرة البيضاء التي تتوسع بالتدريج وبسرعة لتبتلع الشاشة بالمكامل */
 #white-core {
     position: absolute;
     top: 50%;
@@ -411,35 +411,24 @@ footer {
     background-color: #ffffff;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 40px 20px #ffffff;
+    box-shadow: 0 0 50px 25px #ffffff;
     pointer-events: none;
     opacity: 0;
     z-index: 2;
-    transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
-}
-
-#white-flash {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100000;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 1s ease-out;
+    transition: width 0.65s cubic-bezier(0.25, 1, 0.5, 1), 
+                height 0.65s cubic-bezier(0.25, 1, 0.5, 1), 
+                opacity 0.2s ease-in;
 }
 
 .screen-shake {
-    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 @keyframes shake {
-    10%, 90% { transform: translate3d(-3px, 0, 0); }
-    20%, 80% { transform: translate3d(5px, 0, 0); }
-    30%, 50%, 70% { transform: translate3d(-10px, 0, 0); }
-    40%, 60% { transform: translate3d(10px, 0, 0); }
+    10%, 90% { transform: translate3d(-2px, 0, 0); }
+    20%, 80% { transform: translate3d(4px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+    40%, 60% { transform: translate3d(6px, 0, 0); }
 }
 
 @media (max-width: 768px) {
