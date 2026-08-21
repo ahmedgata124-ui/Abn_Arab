@@ -1,5 +1,5 @@
 // ==========================================
-// 1. استيراد المكتبات (Three.js & Firebase)
+// 1. IMPORT THREE.JS & FIREBASE
 // ==========================================
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -11,7 +11,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // ==========================================
-// 2. إعدادات وتطبيق FIREBASE AUTH
+// 2. FIREBASE AUTHENTICATION
 // ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyC2Dbppgjk09edIskPX5OM-ujoqKXLJRDA",
@@ -27,7 +27,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// حالة التطبيق (App State)
 const appState = {
     isLoggedIn: false,
     user: null,
@@ -37,7 +36,6 @@ const appState = {
     costs: { FHD: 2, '4K': 4 }
 };
 
-// تسجيل الدخول بجوجل
 async function handleGoogleLogin() {
     try {
         await signInWithPopup(auth, provider);
@@ -47,7 +45,6 @@ async function handleGoogleLogin() {
     }
 }
 
-// الاستماع لحالة تسجيل الدخول
 onAuthStateChanged(auth, (user) => {
     const loginBtn = document.getElementById('btn-google-login');
     if (user) {
@@ -72,7 +69,6 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// حماية عمليات التوليد والتحميل
 function checkAuthAndExecute(actionCallback) {
     if (!appState.isLoggedIn) {
         alert('عفواً! يجب تسجيل الدخول بجوجل أولاً لتتمكن من استخدام الاستوديو.');
@@ -94,84 +90,37 @@ function checkAuthAndExecute(actionCallback) {
 }
 
 // ==========================================
-// 3. SIMPLEX NOISE CODE (للثقب الأسود)
-// ==========================================
-const noiseChunk = `
-vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
-vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
-
-float snoise(vec3 v) {
-  const vec2 C = vec2(1.0/6.0, 1.0/3.0);
-  const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
-  vec3 i  = floor(v + dot(v, C.yyy));
-  vec3 x0 = v - i + dot(i, C.xxx);
-  vec3 g = step(x0.yzx, x0.xyz);
-  vec3 l = 1.0 - g;
-  vec3 i1 = min(g.xyz, l.zxy);
-  vec3 i2 = max(g.xyz, l.zxy);
-  vec3 x1 = x0 - i1 + C.xxx;
-  vec3 x2 = x0 - i2 + C.yyy;
-  vec3 x3 = x0 - D.yyy;
-  i = mod289(i);
-  vec4 p = permute(permute(permute(
-             i.z + vec4(0.0, i1.z, i2.z, 1.0))
-           + i.y + vec4(0.0, i1.y, i2.y, 1.0))
-           + i.x + vec4(0.0, i1.x, i2.x, 1.0));
-  float n_ = 0.142857142857;
-  vec3 ns = n_ * D.wyz - D.xzx;
-  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-  vec4 x_ = floor(j * ns.z);
-  vec4 y_ = floor(j - 7.0 * x_);
-  vec4 x = x_ * ns.x + ns.yyyy;
-  vec4 y = y_ * ns.x + ns.yyyy;
-  vec4 h = 1.0 - abs(x) - abs(y);
-  vec4 b0 = vec4(x.xy, y.xy);
-  vec4 b1 = vec4(x.zw, y.zw);
-  vec4 s0 = floor(b0)*2.0 + 1.0;
-  vec4 s1 = floor(b1)*2.0 + 1.0;
-  vec4 sh = -step(h, vec4(0.0));
-  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
-  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
-  vec3 p0 = vec3(a0.xy, h.x);
-  vec3 p1 = vec3(a0.zw, h.y);
-  vec3 p2 = vec3(a1.xy, h.z);
-  vec3 p3 = vec3(a1.zw, h.w);
-  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
-  p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
-  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-  m = m * m;
-  return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
-}
-`;
-
-// ==========================================
-// 4. THREE.JS SCENE SETUP
+// 3. CINEMATIC THREE.JS BLACK HOLE ENGINE
 // ==========================================
 const canvas = document.getElementById('bg-canvas');
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 25, 50);
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 12, 28);
 camera.lookAt(0, 0, 0);
 
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" });
+const renderer = new THREE.WebGLRenderer({ 
+    canvas, 
+    antialias: true, 
+    powerPreference: "high-performance",
+    alpha: false
+});
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// ==========================================
-// 5. BLACK HOLE & AURA MESH
-// ==========================================
-const coreGroup = new THREE.Group();
-scene.add(coreGroup);
+// الثقب الأسود المركز (Black Sphere)
+const blackHoleGroup = new THREE.Group();
+scene.add(blackHoleGroup);
 
+const bhRadius = 3.2;
+const bhGeo = new THREE.SphereGeometry(bhRadius, 64, 64);
 const bhMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-const bhGeo = new THREE.SphereGeometry(4, 64, 64);
 const blackHoleMesh = new THREE.Mesh(bhGeo, bhMat);
-coreGroup.add(blackHoleMesh);
+blackHoleGroup.add(blackHoleMesh);
 
+// هالة التوهج الذهبي حول الثقب (Aura Layer)
 const auraMat = new THREE.ShaderMaterial({
-    uniforms: { uTime: { value: 0 }, uIntensity: { value: 1.0 } },
+    uniforms: { uTime: { value: 0 } },
     vertexShader: `
         varying vec3 vNormal;
         varying vec3 vView;
@@ -182,82 +131,120 @@ const auraMat = new THREE.ShaderMaterial({
         }
     `,
     fragmentShader: `
-        uniform float uIntensity;
         varying vec3 vNormal;
         varying vec3 vView;
         void main() {
-            float rim = pow(1.0 - max(dot(vNormal, vView), 0.0), 4.0);
-            gl_FragColor = vec4(vec3(1.0, 0.45, 0.1) * rim * uIntensity * 5.0, 1.0);
+            float rim = pow(1.0 - max(dot(vNormal, vView), 0.0), 3.5);
+            vec3 color = mix(vec3(1.0, 0.5, 0.1), vec3(1.0, 0.9, 0.6), rim);
+            gl_FragColor = vec4(color * rim * 3.0, rim);
         }
     `,
     side: THREE.BackSide,
     transparent: true,
     blending: THREE.AdditiveBlending
 });
-coreGroup.add(new THREE.Mesh(new THREE.SphereGeometry(4.25, 64, 64), auraMat));
+blackHoleGroup.add(new THREE.Mesh(new THREE.SphereGeometry(bhRadius * 1.06, 64, 64), auraMat));
 
 // ==========================================
-// 6. ACCRETION DISK PARTICLES
+// 4. HIGH DENSITY ACCRETION DISK (15,000 FINE PARTICLES)
 // ==========================================
-const instanceCount = 5000;
-const streakGeo = new THREE.CylinderGeometry(0.01, 0.12, 2.2, 3);
-streakGeo.rotateX(Math.PI / 2);
+const particleCount = 15000;
+const particleGeo = new THREE.BufferGeometry();
+
+const positions = new Float32Array(particleCount * 3);
+const colors = new Float32Array(particleCount * 3);
+const scales = new Float32Array(particleCount);
+const orbitData = new Float32Array(particleCount * 3); // radius, speed, initialAngle
+
+const colorInner = new THREE.Color(0xffffff); // قلب أبيض ساطع
+const colorMid = new THREE.Color(0xffaa22);   // ذهبي ومرجاني
+const colorOuter = new THREE.Color(0xcc3300); // برتقالي محمر ناعم
+
+for (let i = 0; i < particleCount; i++) {
+    // توزيع الجسيمات قريبة جداً من الكرة
+    const r = bhRadius * 1.08 + Math.pow(Math.random(), 2.2) * 16.0;
+    const speed = (0.8 / Math.sqrt(r)) * (0.9 + Math.random() * 0.2);
+    const angle = Math.random() * Math.PI * 2;
+
+    positions[i * 3] = Math.cos(angle) * r;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * (0.6 / (r * 0.2));
+    positions[i * 3 + 2] = Math.sin(angle) * r;
+
+    // ألوان تدريجية دقيقة
+    let mixRatio = (r - bhRadius) / 16.0;
+    let finalColor = new THREE.Color();
+    
+    if (mixRatio < 0.25) {
+        finalColor.lerpColors(colorInner, colorMid, mixRatio * 4.0);
+    } else {
+        finalColor.lerpColors(colorMid, colorOuter, (mixRatio - 0.25) * 1.33);
+    }
+
+    colors[i * 3] = finalColor.r;
+    colors[i * 3 + 1] = finalColor.g;
+    colors[i * 3 + 2] = finalColor.b;
+
+    scales[i] = Math.random() * 0.08 + 0.02; // دبابيس ونقط صغيييرة جداً
+    orbitData[i * 3] = r;
+    orbitData[i * 3 + 1] = speed;
+    orbitData[i * 3 + 2] = angle;
+}
+
+particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+particleGeo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+particleGeo.setAttribute('aOrbit', new THREE.BufferAttribute(orbitData, 3));
+
+// Texture دائري ناعم للجسيمات
+const createParticleTexture = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32; canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    grad.addColorStop(0, 'rgba(255,255,255,1)');
+    grad.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 32, 32);
+    return new THREE.CanvasTexture(canvas);
+};
 
 const diskMaterial = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
-        uMorph: { value: 0.1 },
-        uCompression: { value: 1.0 },
-        uIntensity: { value: 1.0 },
-        uOrbitScale: { value: 1.0 }
+        uSpeedScale: { value: 1.0 },
+        uTexture: { value: createParticleTexture() }
     },
     vertexShader: `
-        ${noiseChunk}
+        attribute float aScale;
+        attribute vec3 aOrbit;
         uniform float uTime;
-        uniform float uCompression;
-        uniform float uIntensity;
-        uniform float uOrbitScale;
+        uniform float uSpeedScale;
         varying vec3 vColor;
-        varying float vOpacity;
+        
         void main() {
-            vec4 instPos = instanceMatrix * vec4(0.0, 0.0, 0.0, 1.0);
-            float rOriginal = length(instPos.xz);
-            float r = rOriginal * uCompression;
-            float initialAngle = atan(instPos.z, instPos.x);
-            float orbitalVelocity = (1.5 / sqrt(rOriginal)) * uOrbitScale;
-            float currentAngle = initialAngle + (uTime * orbitalVelocity);
-            vec3 morphedWorldPos = vec3(cos(currentAngle) * r, instPos.y, sin(currentAngle) * r);
+            vColor = color;
             
-            float noise = snoise(vec3(morphedWorldPos.x * 0.08, morphedWorldPos.z * 0.08, uTime * 0.2));
-            morphedWorldPos.y += noise * 0.4;
+            float radius = aOrbit.x;
+            float speed = aOrbit.y * uSpeedScale;
+            float initialAngle = aOrbit.z;
             
-            vec3 viewDir = normalize(cameraPosition - morphedWorldPos);
-            vec3 orbitDir = normalize(vec3(-sin(currentAngle), 0.0, cos(currentAngle)));
-            float doppler = dot(orbitDir, viewDir);
+            float currentAngle = initialAngle + uTime * speed;
+            vec3 pos = position;
+            pos.x = cos(currentAngle) * radius;
+            pos.z = sin(currentAngle) * radius;
             
-            vec3 hot = vec3(1.0, 0.95, 0.9);
-            vec3 warm = vec3(1.0, 0.45, 0.1);
-            vec3 cool = vec3(0.1, 0.35, 1.0);
-            
-            vec3 color = mix(cool, warm, smoothstep(45.0, 12.0, r));
-            color = mix(color, hot, smoothstep(10.0, 4.0, r));
-            vColor = color * (1.3 + doppler * 0.7) * uIntensity;
-            vOpacity = (smoothstep(3.8, 5.5, r)) * (1.0 - smoothstep(38.0, 48.0, r)) * 0.8;
-            
-            float deltaAngle = currentAngle - initialAngle;
-            float c = cos(deltaAngle); float s = sin(deltaAngle);
-            mat3 rotY = mat3(c, 0, s, 0, 1, 0, -s, 0, c);
-            vec3 localPos = (instanceMatrix * vec4(position, 1.0)).xyz;
-            vec3 rotatedLocalPos = rotY * localPos;
-            
-            gl_Position = projectionMatrix * viewMatrix * vec4(morphedWorldPos + rotatedLocalPos, 1.0);
+            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+            gl_PointSize = aScale * (300.0 / -mvPosition.z);
+            gl_Position = projectionMatrix * mvPosition;
         }
     `,
     fragmentShader: `
+        uniform sampler2D uTexture;
         varying vec3 vColor;
-        varying float vOpacity;
+        
         void main() {
-            gl_FragColor = vec4(vColor, vOpacity);
+            vec4 tex = texture2D(uTexture, gl_PointCoord);
+            gl_FragColor = vec4(vColor, tex.a * 0.85);
         }
     `,
     transparent: true,
@@ -265,45 +252,38 @@ const diskMaterial = new THREE.ShaderMaterial({
     depthWrite: false
 });
 
-const instancedDisk = new THREE.InstancedMesh(streakGeo, diskMaterial, instanceCount);
-const dummy = new THREE.Object3D();
-
-for (let i = 0; i < instanceCount; i++) {
-    const r = 5 + Math.pow(Math.random(), 1.3) * 40;
-    const angle = Math.random() * Math.PI * 2;
-    dummy.position.set(Math.cos(angle) * r, (Math.random() - 0.5) * (8 / r), Math.sin(angle) * r);
-    dummy.lookAt(dummy.position.x + Math.sin(angle), dummy.position.y, dummy.position.z - Math.cos(angle));
-    dummy.updateMatrix();
-    instancedDisk.setMatrixAt(i, dummy.matrix);
-}
-scene.add(instancedDisk);
+const particleSystem = new THREE.Points(particleGeo, diskMaterial);
+scene.add(particleSystem);
 
 // ==========================================
-// 7. ANIMATION & RENDER LOOP
+// 5. ANIMATION & RESPONSIVE RESIZE
 // ==========================================
 const clock = new THREE.Clock();
-let speedMultiplier = 0.4;
 
 function animate() {
     requestAnimationFrame(animate);
     const time = clock.getElapsedTime();
     
-    diskMaterial.uniforms.uTime.value = time * speedMultiplier;
-    auraMat.uniforms.uTime.value = time;
+    diskMaterial.uniforms.uTime.value = time;
+    blackHoleGroup.rotation.y = time * 0.05;
     
-    coreGroup.rotation.y = time * 0.1;
     renderer.render(scene, camera);
 }
 animate();
 
 window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
 // ==========================================
-// 8. INTRO CLICK INTERACTION
+// 6. INTRO TRANSITION (CLICK TO EXPLODE)
 // ==========================================
 const overlay = document.getElementById('blackhole-overlay');
 const whiteCore = document.getElementById('white-core');
@@ -317,25 +297,29 @@ if (overlay) {
 
         if (whiteCore) {
             whiteCore.style.opacity = '1';
-            whiteCore.style.width = '14px';
-            whiteCore.style.height = '14px';
+            whiteCore.style.width = '16px';
+            whiteCore.style.height = '16px';
         }
 
+        // تسريع الدوران بالتدريج
+        let speedBoost = 1.0;
         let accelerationInterval = setInterval(() => {
-            speedMultiplier += 0.8;
-            diskMaterial.uniforms.uOrbitScale.value += 0.5;
-        }, 50);
+            speedBoost += 1.2;
+            diskMaterial.uniforms.uSpeedScale.value = speedBoost;
+        }, 40);
 
+        // انفجار الإضاءة والتكبير
         setTimeout(() => {
             clearInterval(accelerationInterval);
             if (whiteCore) {
-                whiteCore.style.transition = 'width 0.25s ease-in, height 0.25s ease-in';
-                whiteCore.style.width = '250vw';
-                whiteCore.style.height = '250vh';
+                whiteCore.style.transition = 'width 0.3s cubic-bezier(0.1, 0.9, 0.2, 1), height 0.3s cubic-bezier(0.1, 0.9, 0.2, 1)';
+                whiteCore.style.width = '300vw';
+                whiteCore.style.height = '300vh';
             }
             document.body.classList.add('screen-shake');
-        }, 600);
+        }, 500);
 
+        // إخفاء الفضاء وإبراز الموقع
         setTimeout(() => {
             if (whiteFlash) whiteFlash.style.opacity = '1';
             
@@ -346,15 +330,15 @@ if (overlay) {
 
                 setTimeout(() => {
                     if (whiteFlash) whiteFlash.style.opacity = '0';
-                }, 300);
+                }, 400);
 
             }, 400);
-        }, 850);
+        }, 750);
     });
 }
 
 // ==========================================
-// 9. UI CONTROL FUNCTIONS (TABS & QUALITY)
+// 7. STUDIO TABS & CONTROLS INTERACTION
 // ==========================================
 function switchTab(tabName) {
     appState.currentTab = tabName;
@@ -404,7 +388,7 @@ function updateActionCost() {
 
 function setupFileUploads() {
     document.querySelectorAll('.upload-box').forEach(box => {
-        if (box.querySelector('input[type="file"]')) return; // لمنع التكرار
+        if (box.querySelector('input[type="file"]')) return;
         
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
@@ -430,17 +414,12 @@ function setupFileUploads() {
     });
 }
 
-// ==========================================
-// 10. INITIALIZATION
-// ==========================================
 function initUIEvents() {
-    // ربط زر تسجيل الدخول
     const loginBtn = document.getElementById('btn-google-login');
     if (loginBtn) {
         loginBtn.addEventListener('click', handleGoogleLogin);
     }
 
-    // ربط التبويبات
     document.querySelectorAll('.tab-btn').forEach(btn => {
         const tabName = btn.getAttribute('data-tab');
         if (tabName) {
@@ -448,11 +427,9 @@ function initUIEvents() {
         }
     });
 
-    // ربط أزرار الجودة
     document.getElementById('btn-fhd')?.addEventListener('click', () => setQuality('FHD'));
     document.getElementById('btn-4k')?.addEventListener('click', () => setQuality('4K'));
 
-    // ربط أزرار التوليد والتنفيذ
     document.querySelectorAll('.studio-panel-content .btn-primary').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -472,7 +449,6 @@ function initUIEvents() {
     setupFileUploads();
 }
 
-// تشغيل الأحداث فور جاهزية الصفحة
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initUIEvents);
 } else {
