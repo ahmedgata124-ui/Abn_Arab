@@ -1,44 +1,44 @@
 /* ==========================================================================
-   1. COLOR PALETTE & TOKENS (SaaS Modern Dark Mode)
+   1. COLOR PALETTE & TOKENS
    ========================================================================== */
 :root {
-    --bg-main: #0F172A;            /* Slate 900 */
-    --bg-card: #1E293B;            /* Slate 800 */
-    --bg-border: #334155;          /* Border Color */
+    --bg-main: #0b0f19;
+    --bg-card: #151c2e;
+    --bg-border: #232d42;
     
-    --primary-accent: #3B82F6;     /* Tailwind Blue 500 */
-    --primary-hover: #2563EB;      /* Tailwind Blue 600 */
-    --secondary-accent: #334155;   /* Muted Dark Slate */
-    --secondary-hover: #475569;
+    --primary-accent: #3B82F6;
+    --primary-hover: #2563EB;
+    --secondary-accent: #1e293b;
+    --secondary-hover: #334155;
     
-    --text-white: #F8FAFC;         /* Crisp White */
-    --text-dim: #94A3B8;           /* Subtitle Slate */
-    --text-placeholder: #64748B;   /* Placeholder Slate */
+    --text-white: #F8FAFC;
+    --text-dim: #94A3B8;
+    --text-placeholder: #64748B;
     
     --status-success: #22C55E;
     --status-error: #EF4444;
     
-    --radius-card: 12px;
-    --radius-btn: 8px;
-    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-card: 16px;
+    --radius-btn: 10px;
+    --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==========================================================================
-   2. GLOBAL RESET & BASE TYPOGRAPHY
+   2. GLOBAL RESET & FULLSCREEN FIXES
    ========================================================================== */
-* {
-    box-sizing: border-box;
+html, body {
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'IBM Plex Sans Arabic', 'Tajawal', sans-serif;
-    scroll-behavior: smooth;
-}
-
-body {
+    overflow-x: hidden;
     background-color: var(--bg-main);
     color: var(--text-white);
-    min-height: 100vh;
-    line-height: 1.6;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 /* ==========================================================================
@@ -48,8 +48,9 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 8%;
-    background-color: rgba(15, 23, 42, 0.9);
+    padding: 16px 6%;
+    background-color: rgba(11, 15, 25, 0.85);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--bg-border);
     position: sticky;
     top: 0;
@@ -57,7 +58,7 @@ nav {
 }
 
 .logo {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -116,7 +117,7 @@ nav {
     background-color: var(--primary-accent);
     color: #FFFFFF;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: var(--radius-btn);
     font-weight: 600;
     font-size: 0.95rem;
@@ -132,13 +133,14 @@ nav {
 .btn-primary:hover {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
 }
 
 .btn-secondary {
     background-color: var(--secondary-accent);
     color: var(--text-white);
-    border: none;
-    padding: 10px 20px;
+    border: 1px solid var(--bg-border);
+    padding: 10px 18px;
     border-radius: var(--radius-btn);
     font-weight: 600;
     font-size: 0.95rem;
@@ -148,7 +150,6 @@ nav {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    text-decoration: none;
 }
 
 .btn-secondary:hover {
@@ -168,33 +169,28 @@ textarea {
     padding: 14px;
     border-radius: var(--radius-btn);
     outline: none;
-    font-weight: 400;
     font-size: 0.95rem;
     min-height: 110px;
     resize: vertical;
     transition: var(--transition-smooth);
 }
 
-textarea::placeholder {
-    color: var(--text-placeholder);
-}
-
 textarea:focus {
     border-color: var(--primary-accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 /* ==========================================================================
-   5. HERO & STUDIO CONTAINER
+   5. STUDIO CONTAINER
    ========================================================================== */
 .hero {
     text-align: center;
-    padding: 60px 20px 30px;
+    padding: 50px 20px 20px;
 }
 
 .hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
     font-weight: 700;
-    margin-bottom: 12px;
 }
 
 .hero h1 span {
@@ -203,13 +199,12 @@ textarea:focus {
 
 .hero p {
     color: var(--text-dim);
-    font-weight: 400;
-    font-size: 1.1rem;
+    margin-top: 8px;
 }
 
 .studio-container {
-    max-width: 900px;
-    margin: 20px auto 60px;
+    max-width: 850px;
+    margin: 30px auto 60px;
     padding: 0 20px;
 }
 
@@ -218,16 +213,16 @@ textarea:focus {
     border: 1px solid var(--bg-border);
     border-radius: var(--radius-card);
     padding: 28px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-/* Tabs System */
 .studio-tabs {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 8px;
     background-color: var(--bg-main);
     padding: 6px;
-    border-radius: var(--radius-card);
+    border-radius: var(--radius-btn);
     border: 1px solid var(--bg-border);
     margin-bottom: 24px;
 }
@@ -236,11 +231,11 @@ textarea:focus {
     background: transparent;
     border: none;
     color: var(--text-dim);
-    padding: 10px 14px;
+    padding: 10px;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     cursor: pointer;
-    border-radius: var(--radius-btn);
+    border-radius: 6px;
     transition: var(--transition-smooth);
     display: flex;
     align-items: center;
@@ -253,19 +248,11 @@ textarea:focus {
     color: #FFFFFF;
 }
 
-/* Quality Selector Switcher */
 .control-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
-    padding: 0 4px;
-}
-
-.control-label {
-    color: var(--text-dim);
-    font-weight: 600;
-    font-size: 0.9rem;
 }
 
 .quality-toggle {
@@ -273,7 +260,7 @@ textarea:focus {
     background-color: var(--bg-main);
     border: 1px solid var(--bg-border);
     padding: 4px;
-    border-radius: var(--radius-btn);
+    border-radius: 8px;
     gap: 4px;
 }
 
@@ -286,7 +273,6 @@ textarea:focus {
     font-size: 0.82rem;
     border-radius: 6px;
     cursor: pointer;
-    transition: var(--transition-smooth);
 }
 
 .quality-btn.active {
@@ -294,18 +280,8 @@ textarea:focus {
     color: #FFFFFF;
 }
 
-/* Conditional Panels */
-.tab-panel {
-    display: none;
-}
-
-.tab-panel.active {
-    display: block;
-}
-
-.input-group {
-    margin-bottom: 20px;
-}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
 .upload-box {
     border: 2px dashed var(--bg-border);
@@ -331,41 +307,28 @@ textarea:focus {
 }
 
 /* ==========================================================================
-   6. FEATURES SECTION
+   6. FEATURES & PRICING
    ========================================================================== */
-.features-section {
-    max-width: 1100px;
+.features-section, .pricing-section {
+    max-width: 1000px;
     margin: 80px auto;
     padding: 0 20px;
 }
 
-.section-title {
-    text-align: center;
-    margin-bottom: 40px;
-}
+.section-title { text-align: center; margin-bottom: 40px; }
 
-.section-title h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-}
-
-.features-grid {
+.features-grid, .pricing-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
 }
 
-.feature-card {
+.feature-card, .price-card {
     background-color: var(--bg-card);
     border: 1px solid var(--bg-border);
     border-radius: var(--radius-card);
     padding: 32px 24px;
     text-align: center;
-    transition: var(--transition-smooth);
-}
-
-.feature-card:hover {
-    transform: translateY(-4px);
 }
 
 .feature-icon-wrapper {
@@ -379,154 +342,42 @@ textarea:focus {
     margin: 0 auto 20px;
 }
 
-.feature-icon-wrapper i {
-    color: var(--primary-accent);
-    font-size: 1.3rem;
-}
+.feature-icon-wrapper i { color: var(--primary-accent); font-size: 1.2rem; }
 
-.feature-card h3 {
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-}
-
-.feature-card p {
-    color: var(--text-dim);
-    font-weight: 400;
-    font-size: 0.92rem;
-}
-
-/* ==========================================================================
-   7. PRICING CARDS
-   ========================================================================== */
-.pricing-section {
-    max-width: 900px;
-    margin: 80px auto;
-    padding: 0 20px;
-}
-
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
-}
-
-.price-card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--bg-border);
-    border-radius: var(--radius-card);
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    transition: var(--transition-smooth);
-}
-
-.price-card.popular {
-    border-color: var(--primary-accent);
-}
+.price-card.popular { border-color: var(--primary-accent); }
 
 .badge-popular {
-    align-self: center;
     background-color: rgba(59, 130, 246, 0.15);
     border: 1px solid rgba(59, 130, 246, 0.4);
     color: var(--primary-accent);
     padding: 4px 16px;
     border-radius: 20px;
-    font-weight: 600;
     font-size: 0.8rem;
+    display: inline-block;
     margin-bottom: 16px;
 }
 
-.card-header {
-    text-align: center;
-    margin-bottom: 24px;
-}
+.price { font-size: 2.2rem; font-weight: 700; }
+.price span { font-size: 0.9rem; color: var(--text-dim); }
 
-.card-header h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-}
-
-.price-card .price {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: var(--text-white);
-}
-
-.price-card .price span {
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: var(--text-dim);
-}
-
-.features-list {
-    list-style: none;
-    margin-bottom: 32px;
-    flex-grow: 1;
-}
-
-.features-list li {
-    padding: 10px 0;
-    color: var(--text-dim);
-    font-weight: 400;
-    font-size: 0.92rem;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
+.features-list { list-style: none; margin: 24px 0; text-align: right; }
+.features-list li { padding: 8px 0; color: var(--text-dim); display: flex; align-items: center; gap: 10px; }
 
 .green-icon { color: var(--status-success); }
 .red-icon { color: var(--status-error); }
 
-/* ==========================================================================
-   8. FOOTER
-   ========================================================================== */
 footer {
     border-top: 1px solid var(--bg-border);
     padding: 40px 20px;
     text-align: center;
-    margin-top: 100px;
-    background-color: var(--bg-main);
+    margin-top: 80px;
 }
 
-.footer-content {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
-}
-
-.support-info {
-    display: flex;
-    gap: 24px;
-}
-
-.support-info a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: var(--transition-smooth);
-}
-
-.support-info a:hover {
-    color: var(--text-white);
-}
-
-footer p {
-    color: var(--text-dim);
-    font-size: 0.85rem;
-}
-
-@media (max-width: 768px) {
-    nav { flex-direction: column; gap: 16px; }
-    .hero h1 { font-size: 1.8rem; }
-    .pricing-grid { grid-template-columns: 1fr; }
-}
+.support-info { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; }
+.support-info a { color: var(--text-dim); text-decoration: none; }
 
 /* ==========================================================================
-   9. BLACKHOLE INTRO OVERLAY & ANIMATION
+   7. ULTRA CINEMATIC FULLSCREEN BLACKHOLE OVERLAY
    ========================================================================== */
 #blackhole-overlay {
     position: fixed;
@@ -534,16 +385,20 @@ footer p {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 9999;
+    z-index: 99999;
     background-color: #000000;
     cursor: pointer;
     overflow: hidden;
-    transition: opacity 1.2s ease-out, visibility 1.2s ease-out;
+    touch-action: none;
+    transition: opacity 1s ease-out, visibility 1s ease-out;
 }
 
 #bg-canvas {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
     display: block;
 }
 
@@ -556,9 +411,10 @@ footer p {
     background-color: #ffffff;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 20px 10px #ffffff;
+    box-shadow: 0 0 40px 20px #ffffff;
     pointer-events: none;
     opacity: 0;
+    z-index: 2;
     transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
 }
 
@@ -569,10 +425,10 @@ footer p {
     width: 100vw;
     height: 100vh;
     background-color: #ffffff;
-    z-index: 10000;
+    z-index: 100000;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 1.2s ease-out;
+    transition: opacity 1s ease-out;
 }
 
 .screen-shake {
@@ -580,8 +436,13 @@ footer p {
 }
 
 @keyframes shake {
-    10%, 90% { transform: translate3d(-2px, 0, 0); }
-    20%, 80% { transform: translate3d(4px, 0, 0); }
-    30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
-    40%, 60% { transform: translate3d(8px, 0, 0); }
+    10%, 90% { transform: translate3d(-3px, 0, 0); }
+    20%, 80% { transform: translate3d(5px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-10px, 0, 0); }
+    40%, 60% { transform: translate3d(10px, 0, 0); }
+}
+
+@media (max-width: 768px) {
+    nav { flex-direction: column; gap: 12px; }
+    .hero h1 { font-size: 1.6rem; }
 }
