@@ -16,7 +16,10 @@
         <canvas id="bg-canvas"></canvas>
         <div id="white-core"></div>
     </div>
-    <div id="white-flash"></div>
+
+    <!-- عناصر الصوت المربوطة بالروابط المباشرة -->
+    <audio id="bg-space-sound" src="https://files.catbox.moe/22os1o.mp3" loop preload="auto"></audio>
+    <audio id="transition-sound" src="https://files.catbox.moe/fnf5d8.mp3" preload="auto"></audio>
 
     <!-- القائمة العلوية Navbar -->
     <nav>
@@ -168,7 +171,6 @@
         </div>
         <div class="pricing-grid">
             
-            <!-- باقة المبتدئ -->
             <div class="price-card">
                 <div class="card-header">
                     <h3>باقة المبتدئ</h3>
@@ -183,7 +185,6 @@
                 <button class="btn-secondary btn-block">اشترك الآن</button>
             </div>
 
-            <!-- باقة المحترفين -->
             <div class="price-card popular">
                 <div class="badge-popular">الباقة الأكثر طلباً</div>
                 <div class="card-header">
@@ -202,7 +203,6 @@
         </div>
     </section>
 
-    <!-- الـ Footer -->
     <footer>
         <div class="footer-content">
             <div class="support-info">
@@ -213,7 +213,6 @@
         </div>
     </footer>
 
-    <!-- استدعاء ملف الجافاسكريبت المحدث -->
     <script type="module" src="./script.js"></script>
 </body>
 </html>
